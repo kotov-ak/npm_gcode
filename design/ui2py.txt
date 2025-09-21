@@ -1,0 +1,2 @@
+# Команда компиляции файла ui (например из QT Designer) в py файл.
+pyuic5 folder\filename.ui -o folder\filename.py
