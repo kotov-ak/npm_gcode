@@ -18,7 +18,7 @@ MODE_HANDLERS = {
 }
 
 advanced_dict = dict(
-    tube_len=528,
+    tube_len=528, # 0-264=1, 265-528=2, 529-729=3,
     i_diam=102, # 60+
     o_diam=132, # 300-
     fabric_thickness=0.6, # 0.6
@@ -52,7 +52,7 @@ base_description = '''
 '''
 
 version_description = '''
-Версия программы 05/09/25
+Версия программы 22/09/25
 
 Важное:
 - Реализуется единственный алгоритм пробития (случайный)

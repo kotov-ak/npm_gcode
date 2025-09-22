@@ -79,72 +79,58 @@ def check_params_for_validity(params_dict):
     dimension_checks = [
         # (условие_ошибки, имя_параметра, сообщение_об_ошибке, допустимые_границы)
         (params_dict['tube_len'] >= 1200.001, 'tube_len',
-         f"Длина трубы должна быть < 1200 мм (получено: {params_dict['tube_len']})",
-         "0 < tube_len < 1200 мм"),
+         f"Длина трубы должна быть < 1200 мм (получено: {params_dict['tube_len']})"),
 
         (params_dict['i_diam'] <= 59.999, 'i_diam',
-         f"Внутренний диаметр должен быть > 60 мм (получено: {params_dict['i_diam']})",
-         "60 мм < i_diam < 300 мм"),
+         f"Внутренний диаметр должен быть > 60 мм (получено: {params_dict['i_diam']})"),
 
         (params_dict['i_diam'] >= 300.001, 'i_diam',
-         f"Внутренний диаметр должен быть < 300 мм (получено: {params_dict['i_diam']})",
-         "60 мм < i_diam < 300 мм"),
+         f"Внутренний диаметр должен быть < 300 мм (получено: {params_dict['i_diam']})"),
 
-        (params_dict['o_diam'] >= 301.001, 'o_diam',
-         f"Внешний диаметр должен быть < 301 мм (получено: {params_dict['o_diam']})",
-         "61 мм < o_diam < 301 мм"),
+        (params_dict['o_diam'] >= 320.001, 'o_diam',
+         f"Внешний диаметр должен быть < 320 мм (получено: {params_dict['o_diam']})"),
 
         (params_dict['o_diam'] <= 60.999, 'o_diam',
-         f"Внешний диаметр должен быть > 61 мм (получено: {params_dict['o_diam']})",
-         "61 мм < o_diam < 301 мм"),
+         f"Внешний диаметр должен быть > 61 мм (получено: {params_dict['o_diam']})"),
 
         (params_dict['i_diam'] > params_dict['o_diam'], 'i_diam',
-         f"Внутренний диаметр ({params_dict['i_diam']}) не может быть больше внешнего ({params_dict['o_diam']})",
-         "i_diam < o_diam"),
+         f"Внутренний диаметр ({params_dict['i_diam']}) не может быть больше внешнего ({params_dict['o_diam']})"),
 
         (params_dict['punch_step_r'] > params_dict['i_diam'] * 3.14, 'punch_step_r',
-         f"Окружной шаг ({params_dict['punch_step_r']}) слишком большой для внутреннего диаметра {params_dict['i_diam']} мм",
-         "punch_step_r <= π * i_diam"),
+         f"Окружной шаг ({params_dict['punch_step_r']}) слишком большой для внутреннего диаметра {params_dict['i_diam']} мм"),
 
         (params_dict['punch_depth'] >= 15.001, 'punch_depth',
-         f"Глубина пробития должна быть < 15 мм (получено: {params_dict['punch_depth']})",
-         "0 < punch_depth < 15 мм"),
+         f"Глубина пробития должна быть < 15 мм (получено: {params_dict['punch_depth']})"),
 
-        (params_dict['idling_speed'] >= 5000.001, 'idling_speed',
-         f"Скорость холостого хода должна быть < 5000 мм/мин (получено: {params_dict['idling_speed']})",
-         "0 < idling_speed < 5000 мм/мин"),
+        (params_dict['idling_speed'] >= 7000.001, 'idling_speed',
+         f"Скорость холостого хода должна быть < 7000 мм/мин (получено: {params_dict['idling_speed']})"),
 
-        (params_dict['move_speed'] >= 2000.001, 'move_speed',
-         f"Скорость пробития должна быть < 2000 мм/мин (получено: {params_dict['move_speed']})",
-         "0 < move_speed < 2000 мм/мин"),
+        (params_dict['move_speed'] >= 2500.001, 'move_speed',
+         f"Скорость пробития должна быть < 2500 мм/мин (получено: {params_dict['move_speed']})"),
 
         (params_dict['rotate_speed'] >= 2000.001, 'rotate_speed',
-         f"Скорость поворота должна быть < 2000 мм/мин (получено: {params_dict['rotate_speed']})",
-         "0 < rotate_speed < 2000 мм/мин")
+         f"Скорость поворота должна быть < 2000 мм/мин (получено: {params_dict['rotate_speed']})")
     ]
 
-    for check_failed, param_name, error_message, allowed_range in dimension_checks:
+    for check_failed, param_name, error_message in dimension_checks:
         if check_failed:
-            return False, param_name, f"{error_message}. Допустимый диапазон: {allowed_range}"
+            return False, param_name, f"{error_message}."
 
     # Проверка дискретных значений
     discrete_checks = [
         (params_dict['volumetric_density'] not in (15, 25, 45), 'volumetric_density',
-         f"Объемная плотность должна быть 15, 25 или 45 (получено: {params_dict['volumetric_density']})",
-         "15, 25 или 45"),
+         f"Объемная плотность должна быть 15, 25 или 45 (получено: {params_dict['volumetric_density']})"),
 
         (params_dict['punch_step_r'] not in (1, 2, 4), 'punch_step_r',
-         f"Шаг пробития должен быть 1, 2 или 4 мм (получено: {params_dict['punch_step_r']})",
-         "1, 2 или 4 мм"),
+         f"Шаг пробития должен быть 1, 2 или 4 мм (получено: {params_dict['punch_step_r']})"),
 
         (params_dict['needle_step'] != 8, 'needle_step',
-         f"Шаг игл должен быть равен 8 мм (получено: {params_dict['needle_step']})",
-         "8 мм")
+         f"Шаг игл должен быть равен 8 мм (получено: {params_dict['needle_step']})")
     ]
 
-    for check_failed, param_name, error_message, allowed_values in discrete_checks:
+    for check_failed, param_name, error_message in discrete_checks:
         if check_failed:
-            return False, param_name, f"{error_message}. Допустимые значения: {allowed_values}"
+            return False, param_name, f"{error_message}."
 
     # Все проверки пройдены успешно
     return True, None, None
