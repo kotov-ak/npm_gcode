@@ -1,0 +1,5 @@
+.idea/
+__pycache__/
+design/__pycache__/
+design/py_files/__pycache__/
+functions/__pycache__/
