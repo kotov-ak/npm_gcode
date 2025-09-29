@@ -17,6 +17,44 @@ MODE_HANDLERS = {
     ('Стандартный', 'Ручной ввод'): 'punch_mode_11',
 }
 
+
+class GenerationConfig:
+    """Конфигурация для генерации G-кода"""
+
+    # Отладка
+    DEBUG_OUTPUT = False
+    DEBUG_TO_FILE = False
+
+    # Алгоритм
+    EXTRA_ROTATIONS = 20
+    CENTER_X = 0.0
+    RANDOM_SEED = 5
+    RANDOM_AMPLITUDE = 0.5
+
+    # Соответствие объемной плотности к коэффициенту диаметров
+    VOLUMETRIC_DENSITY_MAP = {15: 8, 25: 4, 45: 2}
+
+
+class ValidationLimits:
+    """Ограничения для валидации параметров"""
+
+    # Габаритные ограничения
+    MAX_TUBE_LENGTH = 1200.0
+    MIN_INNER_DIAMETER = 10.0
+    MAX_INNER_DIAMETER = 300.0
+    MIN_OUTER_DIAMETER = 10.0
+    MAX_OUTER_DIAMETER = 320.0
+    MAX_PUNCH_DEPTH = 15.0
+    MAX_IDLING_SPEED = 10000.0
+    MAX_MOVE_SPEED = 2500.0
+    MAX_ROTATE_SPEED = 2000.0
+
+    # Дискретные значения
+    ALLOWED_VOLUMETRIC_DENSITIES = (15, 25, 45)
+    ALLOWED_PUNCH_STEPS = (1, 2, 4)
+    REQUIRED_NEEDLE_STEP = 8
+
+
 advanced_dict = dict(
     tube_len=528, # 0-264=1, 265-528=2, 529-729=3,
     i_diam=102, # 60+
@@ -28,7 +66,7 @@ advanced_dict = dict(
     punch_head_len=264, # 264
     punch_depth=14, # 12+
     punch_offset=10,
-    shoe_depth=5,
+    support_depth=5,
     idling_speed=5000, # 3000-5000
     move_speed=1500, # 1500
     rotate_speed=1000, # 1000
@@ -52,14 +90,5 @@ base_description = '''
 '''
 
 version_description = '''
-Версия программы 22/09/25
-
-Важное:
-- Реализуется единственный алгоритм пробития (случайный)
-
-Исправлено:
-- 
-
-Добавлено:
-- 
+version 1.1
 '''

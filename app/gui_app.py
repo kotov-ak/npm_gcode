@@ -1,15 +1,20 @@
 import os
 import sys
 import time
-from PyQt5 import QtWidgets
+
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog,
                              QMessageBox, QWidget)
 
 from design.py_files.main_v_2025_09_05 import Ui_NPM_Code_Generator
 from design.py_files.scheme_v_2025_09_05 import Ui_Scheme
-from functions.prod_functions import *
+from functions.prod_functions import (
+    current_time, write_in_file_by_lines, check_params_for_validity
+)
 from constants.const import *
+from functions.tube_g_code_generator import *
+from visualization import create_punch_visualization
 
 # Настройки DPI для корректного отображения на мониторах
 os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "1"
@@ -29,7 +34,7 @@ class CodeGenerationThread(QThread):
     def run(self):
         try:
             # Генерация G-кода
-            g_code_lines = triangle_punch_radial_spiral_needle_full_random_upd(self.advanced_dict)
+            g_code_lines = generate_command_lines(self.advanced_dict)
 
             # Сохранение в файл
             write_in_file_by_lines(g_code_lines, self.gcode_path)
@@ -68,6 +73,9 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
 
         # инициализация генерации
         self.generate.clicked.connect(self.gen_code)
+
+        # инициализация визуализации
+        self.visualize.clicked.connect(self.gen_visualization)
 
     def base_info_display(self):
         """Отображение базовой информации из меню"""
@@ -222,6 +230,61 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
             self.generation_thread.terminate()
             self.generation_thread.wait()
         event.accept()
+
+    def gen_visualization(self):
+        """Генерация визуализации паттерна пробития"""
+        print("[GUI] === НАЧАЛО ГЕНЕРАЦИИ ВИЗУАЛИЗАЦИИ ===")
+
+        # Обновляем значения параметров
+        print("[GUI] Обновление значений параметров...")
+        if not self.input_values_update():
+            self.text_to_info_out('ОШИБКА! Не удалось обновить значения параметров')
+            print("[GUI] ОШИБКА: Не удалось обновить значения параметров")
+            return
+
+        print("[GUI] Параметры успешно обновлены")
+
+        # Проверяем параметры на валидность
+        print("[GUI] Проверка валидности параметров...")
+        is_valid, invalid_param, error_message = check_params_for_validity(advanced_dict)
+
+        if not is_valid:
+            error_msg = f'Ошибка в параметре "{invalid_param}": {error_message}'
+            self.text_to_info_out(error_msg)
+            self.text_to_info_out('ОШИБКА! Визуализация НЕ создана, ошибка в значениях параметров')
+            print(f"[GUI] ОШИБКА валидации: {error_msg}")
+            return
+
+        print("[GUI] Параметры прошли валидацию")
+
+        try:
+            # Создаем путь для HTML файла
+            html_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                   "visualization.html")
+
+            print(f"[GUI] Запуск визуализации с путем: {html_path}")
+            print("[GUI] Параметры визуализации:")
+            for key, value in advanced_dict.items():
+                print(f"[GUI]   {key}: {value}")
+
+            # Генерируем визуализацию
+            create_punch_visualization(advanced_dict, html_path)
+
+            self.text_to_info_out(f"Визуализация сохранена в: {html_path}")
+            self.text_to_info_out("Визуализация успешно создана")
+            print("[GUI] Визуализация успешно завершена")
+
+        except Exception as e:
+            error_msg = f"ОШИБКА! Не удалось создать визуализацию: {str(e)}"
+            self.text_to_info_out(error_msg)
+
+            # Подробный вывод в консоль
+            print(f"[GUI] КРИТИЧЕСКАЯ ОШИБКА визуализации: {e}")
+            print(f"[GUI] Тип ошибки: {type(e).__name__}")
+            print(f"[GUI] Путь HTML файла: {html_path if 'html_path' in locals() else 'Не определен'}")
+            print("[GUI] Полный стек ошибки:")
+            import traceback
+            traceback.print_exc()
 
 
 def app_show():
