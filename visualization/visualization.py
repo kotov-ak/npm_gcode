@@ -199,7 +199,9 @@ def draw_visualization(all_hits, params, nTurns, html_path="visualization.html")
 
     print("[ВИЗУАЛИЗАЦИЯ] Сохранение HTML файла...")
     # Сохранение в HTML
-    fig.write_html(html_path, include_plotlyjs=VisualizationConfig.INCLUDE_PLOTLYJS)
+    fig.write_html(html_path,
+                   include_plotlyjs=VisualizationConfig.INCLUDE_PLOTLYJS,
+                   auto_open=True )
     print(f"[ВИЗУАЛИЗАЦИЯ] HTML файл успешно сохранен")
 
     return html_path
