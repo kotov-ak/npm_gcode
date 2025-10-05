@@ -52,7 +52,8 @@ class TubeCommandGenerator:
 
         commands = self.generate_commands(revolutions)
 
-        commands.append(PunchCommands.waiting())
+        if (len(commands) > 0):
+            commands.append(PunchCommands.waiting())
 
         support_offset = self.params['fabric_thickness'] * revolutions
         commands_for_virtual_stitching = self.generate_commands(self.config.EXTRA_ROTATIONS, support_offset)
