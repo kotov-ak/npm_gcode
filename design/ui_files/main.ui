@@ -32,7 +32,7 @@
    <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>Генератор G-кода для ИПС v 2025-09-05</string>
+   <string>Генератор G-кода для ИПС &quot;Муравьед&quot;</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -130,7 +130,7 @@ background-color: rgb(255, 243, 244);
        <number>1</number>
       </property>
       <property name="maximum">
-       <double>10000.000000000000000</double>
+       <double>6000.000000000000000</double>
       </property>
       <property name="singleStep">
        <double>100.000000000000000</double>
@@ -483,10 +483,10 @@ background-color: rgb(255, 243, 244);
        <number>2</number>
       </property>
       <property name="maximum">
-       <double>2.000000000000000</double>
+       <double>1.000000000000000</double>
       </property>
       <property name="singleStep">
-       <double>0.100000000000000</double>
+       <double>0.050000000000000</double>
       </property>
      </widget>
      <widget class="QLabel" name="fab_thick_lbl">
@@ -553,6 +553,12 @@ background-color: rgb(255, 243, 244);
         <family>Arial</family>
        </font>
       </property>
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="toolTipDuration">
+       <number>-1</number>
+      </property>
       <property name="text">
        <string>Шаг</string>
       </property>
@@ -584,10 +590,16 @@ background-color: rgb(255, 243, 244);
       <property name="decimals">
        <number>1</number>
       </property>
+      <property name="minimum">
+       <double>1.000000000000000</double>
+      </property>
       <property name="maximum">
-       <double>8.000000000000000</double>
+       <double>1.000000000000000</double>
       </property>
       <property name="singleStep">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="value">
        <double>1.000000000000000</double>
       </property>
      </widget>
@@ -769,6 +781,9 @@ background-color: rgb(255, 243, 244);
       <property name="decimals">
        <number>1</number>
       </property>
+      <property name="minimum">
+       <double>8.000000000000000</double>
+      </property>
       <property name="maximum">
        <double>8.000000000000000</double>
       </property>
@@ -798,7 +813,10 @@ background-color: rgb(255, 243, 244);
        <number>1</number>
       </property>
       <property name="maximum">
-       <double>270.000000000000000</double>
+       <double>264.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>1.000000000000000</double>
       </property>
      </widget>
      <widget class="QLabel" name="punch_head_len_lbl">
@@ -1152,9 +1170,9 @@ background-color: rgb(255, 243, 244);
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>220</y>
+       <y>260</y>
        <width>261</width>
-       <height>81</height>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
@@ -1165,6 +1183,25 @@ background-color: rgb(255, 243, 244);
      </property>
      <property name="text">
       <string>Сгенерировать G-код</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="visualization">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>210</y>
+       <width>261</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Визуализация</string>
      </property>
     </widget>
    </widget>
