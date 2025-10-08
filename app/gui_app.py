@@ -7,8 +7,8 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog,
                              QMessageBox, QWidget)
 
-from design.py_files.main_v_2025_09_05 import Ui_NPM_Code_Generator
-from design.py_files.scheme_v_2025_09_05 import Ui_Scheme
+from design.py_files.main import Ui_NPM_Code_Generator
+from design.py_files.scheme import Ui_Scheme
 from functions.prod_functions import (
     current_time, write_in_file_by_lines, check_params_for_validity
 )
