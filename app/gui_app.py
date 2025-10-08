@@ -75,7 +75,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
         self.generate.clicked.connect(self.gen_code)
 
         # инициализация визуализации
-        self.visualize.clicked.connect(self.gen_visualization)
+        self.visualization.clicked.connect(self.gen_visualization)
 
     def base_info_display(self):
         """Отображение базовой информации из меню"""
@@ -146,7 +146,8 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
                        self.shoe_depth,
                        self.idling_speed,
                        self.move_speed,
-                       self.rotate_speed]
+                       self.rotate_speed,
+                       self.random_border]
 
         try:
             for key, widget in zip(advanced_dict.keys(), values_list):
@@ -260,7 +261,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
         try:
             # Создаем путь для HTML файла
             html_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                                   "visualization.html")
+                                   "viz/visualization.html")
 
             print(f"[GUI] Запуск визуализации с путем: {html_path}")
             print("[GUI] Параметры визуализации:")
