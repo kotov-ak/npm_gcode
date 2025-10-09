@@ -64,8 +64,8 @@ class TubeCommandGenerator:
         """Генерация случайных смещений"""
         seed = self.config.RANDOM_SEED
         rng = np.random.default_rng(seed)
-        a = 2 * self.config.CENTER_X - self.config.RANDOM_AMPLITUDE
-        b = self.config.RANDOM_AMPLITUDE
+        a = 2 * self.config.CENTER_X - self.params['random_border']
+        b = self.params['random_border']
         return rng.uniform(a, b, size=total_punches)
 
     

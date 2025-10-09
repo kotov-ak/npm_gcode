@@ -54,7 +54,7 @@ background-color: rgb(255, 243, 244);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>Screenshot_1.png</pixmap>
+    <pixmap>../pictures/scheme.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
