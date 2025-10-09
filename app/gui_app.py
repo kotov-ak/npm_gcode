@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
 
     def get_code_filename(self):
         """Получение файла для кода (путь)"""
-        folderpath = QFileDialog.getExistingDirectory(directory='../gcode')
+        folderpath = QFileDialog.getExistingDirectory(directory='./gcode')
         filename = self.code_filename_input.text()
 
         if not folderpath:
