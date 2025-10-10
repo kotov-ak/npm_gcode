@@ -143,8 +143,8 @@ class MotionCommand:
             raise ValueError(f"Неизвестный тип команды: {self.command_type}")
 
         # Добавляем комментарий если есть
-        # if self.comment:
-        #     result += f" ; {self.comment}"
+        if self.comment:
+            result += f" ; {self.comment}"
 
         return result
 
@@ -170,7 +170,7 @@ class PunchCommands:
         """Команда пробития"""
         return MotionCommand.linear_move(
             x=x, y=y, z=z, feed_rate=feed_rate,
-            # comment="Внедрение игл"
+            comment="Внедрение игл"
         )
 
     @staticmethod
@@ -178,7 +178,7 @@ class PunchCommands:
         """Команда Извлечение игла после пробития"""
         return MotionCommand.linear_move(
             x=x, y=y, z=z, feed_rate=feed_rate,
-            # comment="Извлечение игл"
+            comment="Извлечение игл"
         )
 
     @staticmethod
@@ -186,7 +186,7 @@ class PunchCommands:
         """Команда поворота"""
         return MotionCommand.linear_move(
             a=angle, feed_rate=feed_rate,
-            # comment="Поворот"
+            comment="Поворот"
         )
 
     @staticmethod

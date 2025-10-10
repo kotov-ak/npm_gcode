@@ -1,0 +1,12 @@
+# GUI framework
+PyQt5>=5.15.0
+
+# Numerical computations
+numpy>=1.21.0
+
+# 3D visualization
+plotly>=5.0.0
+
+# Testing (included in Python standard library, but listed for clarity)
+# unittest - standard library
+# datetime - standard library
