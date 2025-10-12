@@ -36,6 +36,7 @@ class TestGCodeGeneration(unittest.TestCase):
             'idling_speed': 6000,
             'move_speed': 1200,
             'rotate_speed': 2000,
+            'random_border':0.5
         }
 
         self.reference_file = os.path.join(
