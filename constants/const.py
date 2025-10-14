@@ -86,8 +86,8 @@ advanced_dict = dict(
     support_depth=5,
     idling_speed=5000, # 3000-5000
     move_speed=1500, # 1500
-    rotate_speed=1000, # 1000
-    random_border=0.5 # 0-0.5
+    rotate_speed=1000,
+    random_border=0.25# 1000
 )
 
 
