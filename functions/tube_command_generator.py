@@ -73,7 +73,7 @@ class TubeCommandGenerator:
     def get_circle_len(self, revolution):
         return math.pi * (self.params['i_diam'] + 2 * self.params['fabric_thickness'] * revolution)
 
-    def get_angle_steps_count(self, revolution):
+    def get_angle_steps_count_legacy(self, revolution):
         circle_len = self.get_circle_len(revolution)
         # «Идеальное» дробное число шагов
         ideal_steps = circle_len / self.params['punch_step_r']
@@ -85,18 +85,20 @@ class TubeCommandGenerator:
                             key=lambda n: (abs(circle_len / n - self.params['punch_step_r']), -n))
         return steps_num_final
 
-    def get_angle_steps_count_modified(self, revolution, num_of_needle_rows=1, dist_btw_needles=8):
+    def get_angle_steps_count(self, revolution):
         """
         Определяет оптимальное количество шагов для определенного диаметра
         Расчет ведётся исходя из целевого шага self.params['punch_step_r']
-        Количества рядов игл num_of_needle_rows
-        Расстояния между рядами игл dist_btw_needles
+        Количества рядов игл из self.params['num_of_needle_rows']
+        Расстояния между рядами игл из self.params["needles_dist_y"]
 
         """
         # Длина окружности
         circle_len = self.get_circle_len(revolution)
         # Величина смещения игольницы по окружности
-        radial_head_offset = num_of_needle_rows * dist_btw_needles
+        num_of_needle_rows = self.params.get('num_of_needle_rows', 1) # <--- значение по умолчению, пока в гуи нет этого поля
+        # NEEDLES_DIST_Y = self.params.get("needles_dist_y", self.config.NEEDLES_DIST_Y)
+        radial_head_offset = num_of_needle_rows * self.config.NEEDLES_DIST_Y
 
         # Идеальное количество шагов
         ideal_steps = circle_len / self.params['punch_step_r']
@@ -112,15 +114,15 @@ class TubeCommandGenerator:
         # Выбираем вариант с шагом ближе к целевому
         if abs(step_low - self.params['punch_step_r']) <= abs(step_high - self.params['punch_step_r']):
             final_steps = low_steps
-            final_step_size = step_low
+            # final_step_size = step_low
         else:
             final_steps = high_steps
-            final_step_size = step_high
+            # final_step_size = step_high
 
         return final_steps
 
 
-    def generate_commands(self, revolutions, support_offset = None):
+    def generate_commands_legacy(self, revolutions, support_offset = None):
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
 
@@ -184,9 +186,11 @@ class TubeCommandGenerator:
 
         return commands
 
-    def generate_commands_modified(self, revolutions,  num_of_needle_rows=1, dist_btw_needles=8, support_offset=None,):
+    def generate_commands(self, revolutions, support_offset=None):
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
+        num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
+        # NEEDLES_DIST_Y = self.params.get("needles_dist_y", self.config.NEEDLES_DIST_Y)
 
         x_step_count = math.ceil(self.params['tube_len'] / self.params['punch_head_len'])
         x_step_size = self.params['punch_head_len']
@@ -205,20 +209,16 @@ class TubeCommandGenerator:
         commands = []
         random_offset_it = iter(self.random_offsets)
         for revolution in range(revolutions):
-            angle_step_count = self.get_angle_steps_count_modified(revolution)
+            angle_step_count = self.get_angle_steps_count(revolution)
             angle_step_size = 360 / angle_step_count
             for angle_step in range(angle_step_count):
 
-                circumferential_head_step = num_of_needle_rows*dist_btw_needles
-                print(num_of_needle_rows, dist_btw_needles)
+                circumferential_head_step = num_of_needle_rows * self.config.NEEDLES_DIST_Y
                 # пробиваем зоны между иглами (в радиальном направлении)
                 # если заполнили то делаем проворот на всю длину игольницы
-                if dist_btw_needles <= (angle_step % circumferential_head_step) <= (circumferential_head_step-1):
-
+                if self.config.NEEDLES_DIST_Y <= (angle_step % circumferential_head_step) <= (circumferential_head_step-1):
                     # просто проворачиваем
                     continue
-
-
 
                 angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
                 direction = not bool(

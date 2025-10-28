@@ -26,6 +26,8 @@ punch_params_dict = dict(
     idling_speed=6000, # 3000-5000
     move_speed=1200, # 1500
     rotate_speed=2000, # 1000
+    random_border=0.5, # 0-0.5
+    num_of_needle_rows=1 # количество рядов игл
 )
 
 if __name__ == '__main__':
