@@ -191,3 +191,69 @@ NPM_GUI_APP_yyyy-mm-dd/
 - 15 (при 8 оборотах на паттерн)
 - 25 (при 4 оборотах на паттерн)
 - 45 (при 2 оборотах на паттерн)
+
+🔄 **Последовательность вызовов**
+
+# Краткая последовательность работы системы
+
+## 1. Начало работы
+**Файл:** `prod_functions.py`  
+**Функция:** Получение параметров
+
+## 2. Валидация
+**Файл:** `parameter_validator.py`  
+**Функция:** `validate_all_parameters()`
+
+## 3. Генерация G-кода
+**Файл:** `tube_g_code_generator.py`  
+**Функция:** `generate_command_lines()`
+
+## 4. Координация процесса
+**Файл:** `advanced_punch_generator.py`  
+**Функция:** `generate_radial_spiral_pattern()`
+
+## 5. Расчет геометрии
+**Файл:** `geometry_calculator.py`  
+**Функции:** 
+- `calculate_rotation_parameters()`
+- `calculate_layer_parameters()`
+
+## 6. Генерация паттерна
+**Файл:** `tube_command_generator.py`  
+**Функции:**
+- `generate_punch_pattern_commands()`
+- `generate_commands()`
+
+## 7. Создание команд
+**Файл:** `motion_commands.py`  
+**Функции:**
+- `PunchCommands.rotate()`
+- `PunchCommands.approach()`
+- `PunchCommands.punch()`
+- `PunchCommands.retract()`
+
+## 8. Расчет времени
+**Файл:** `time_calc.py`  
+**Функция:** `time_prediction_motioncommand()`
+
+## 9. Форматирование
+**Файл:** `gcode_file_formatter.py`  
+**Функция:** `format_to_lines()`
+
+## 10. Запись файла
+**Файл:** `prod_functions.py`  
+**Функция:** `write_in_file_by_lines()`
+
+---
+
+## 🔄 Поток данных
+
+`prod_functions.py` → 
+`parameter_validator.py` → 
+`tube_g_code_generator.py` → 
+`advanced_punch_generator.py` → 
+`tube_command_generator.py` → 
+`motion_commands.py` → 
+`time_calc.py` → 
+`gcode_file_formatter.py` → 
+`prod_functions.py`

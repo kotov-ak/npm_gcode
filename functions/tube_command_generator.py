@@ -56,7 +56,7 @@ class TubeCommandGenerator:
             commands.append(PunchCommands.waiting())
 
         support_offset = self.params['fabric_thickness'] * revolutions
-        commands_for_virtual_stitching = self.generate_commands(self.config.EXTRA_ROTATIONS, support_offset)
+        commands_for_virtual_stitching = self.generate_commands(self.config.EXTRA_ROTATIONS, support_offset=support_offset)
         commands.extend(commands_for_virtual_stitching)
 
         return commands
@@ -210,6 +210,7 @@ class TubeCommandGenerator:
             for angle_step in range(angle_step_count):
 
                 circumferential_head_step = num_of_needle_rows*dist_btw_needles
+                print(num_of_needle_rows, dist_btw_needles)
                 # пробиваем зоны между иглами (в радиальном направлении)
                 # если заполнили то делаем проворот на всю длину игольницы
                 if dist_btw_needles <= (angle_step % circumferential_head_step) <= (circumferential_head_step-1):
