@@ -23,6 +23,7 @@ class TubeCommandGenerator:
         self.params = params_dict
         self.config = GenerationConfig()
         self.geometry = GeometryCalculator(params_dict)
+        self.revolution_offset = 0  # Смещение оборотов для продолжения генерации
 
     def nearest_multiple(self, X: float, divisor: int) -> int:
         """
@@ -208,9 +209,11 @@ class TubeCommandGenerator:
 
         commands = []
         random_offset_it = iter(self.random_offsets)
+
         for revolution in range(revolutions):
             angle_step_count = self.get_angle_steps_count(revolution)
             angle_step_size = 360 / angle_step_count
+
             for angle_step in range(angle_step_count):
 
                 circumferential_head_step = num_of_needle_rows * self.config.NEEDLES_DIST_Y
@@ -220,7 +223,8 @@ class TubeCommandGenerator:
                     # просто проворачиваем
                     continue
 
-                angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
+                # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
+                angle_deg = round(360 * (revolution + self.revolution_offset) + angle_step_size * angle_step, 3)
                 direction = not bool(
                     (revolution * angle_step_count + angle_step) % 2)  # самый первый удар имеет направление true
 
@@ -261,6 +265,7 @@ class TubeCommandGenerator:
                         commands.append(PunchCommands.punch(x, y_punch, z_punch, self.params['move_speed']))
                         commands.append(PunchCommands.retract(x, y, z, self.params['move_speed']))
 
+        self.revolution_offset = revolutions # Сохраняем для следующих вызовов функции
         return commands
 
     def get_generation_statistics(self) -> dict:
