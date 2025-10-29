@@ -224,6 +224,13 @@ class TubeCommandGenerator:
                 # если заполнили то делаем проворот на всю длину игольницы
                 if self.config.NEEDLES_DIST_Y <= (angle_step % circumferential_head_step) <= (circumferential_head_step-1):
                     # просто проворачиваем
+                    # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
+                    angle_deg = round(360 * (revolution + self.revolution_offset) + angle_step_size * angle_step, 3)
+                    direction = not bool(
+                        (revolution * angle_step_count + angle_step) % 2)  # самый первый удар имеет направление true
+
+                    commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
+
                     continue
 
                 # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
