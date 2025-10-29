@@ -99,7 +99,10 @@ class TubeCommandGenerator:
         # Величина смещения игольницы по окружности
         num_of_needle_rows = self.params.get('num_of_needle_rows', 1) # <--- значение по умолчению, пока в гуи нет этого поля
         # NEEDLES_DIST_Y = self.params.get("needles_dist_y", self.config.NEEDLES_DIST_Y)
-        radial_head_offset = num_of_needle_rows * self.config.NEEDLES_DIST_Y
+        if num_of_needle_rows == 1:
+            radial_head_offset = 2
+        else:
+            radial_head_offset = num_of_needle_rows * self.config.NEEDLES_DIST_Y
 
         # Идеальное количество шагов
         ideal_steps = circle_len / self.params['punch_step_r']
