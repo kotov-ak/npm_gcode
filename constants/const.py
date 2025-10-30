@@ -34,10 +34,6 @@ class GenerationConfig:
     # Соответствие объемной плотности к коэффициенту диаметров
     VOLUMETRIC_DENSITY_MAP = {15: 8, 25: 4, 45: 2}
 
-    # Параметры игольницы
-    NEEDLES_DIST_X = 8  # Расстояние между рядами игл
-    NEEDLES_DIST_Y = 8  # Расстояние между рядами игл
-
 
 class ValidationLimits:
     """Ограничения для валидации параметров"""
@@ -82,7 +78,8 @@ advanced_dict = dict(
     o_diam=132, # 300-
     fabric_thickness=0.6, # 0.6
     punch_step_r=1, # 1
-    needle_step=8, # 8
+    needle_step_X=8, # 8
+    needle_step_Y=8, # 8-16
     volumetric_density=25,
     punch_head_len=264, # 264
     punch_depth=14, # 12+

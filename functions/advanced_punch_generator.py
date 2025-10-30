@@ -111,7 +111,8 @@ if __name__ == '__main__':
         'o_diam': 11,
         'fabric_thickness': 1.0,
         'punch_step_r': 1,
-        'needle_step': 8,
+        'needle_step_X': 8,
+        'needle_step_Y': 8,
         'volumetric_density': 25,
         'punch_head_len': 264,
         'punch_depth': 14,
@@ -120,7 +121,8 @@ if __name__ == '__main__':
         'idling_speed': 6000,
         'move_speed': 1200,
         'rotate_speed': 2000,
-        'random_border': 0.25
+        'random_border': 0.25,
+        'num_of_needle_rows': 1
     }
             
     generator = CommandLinesGenerator(minimal_params)

@@ -43,7 +43,7 @@ class TubeCommandGenerator:
             total_cranks += angle_step_count
         x_step_count = math.ceil(self.params['tube_len'] / self.params['punch_head_len'])
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
-        x_substep_count = round(self.params['needle_step'] / volumetric_density)
+        x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
         total_punches = x_substep_count * x_step_count * total_cranks
         self.random_offsets = self._generate_random_offsets(total_punches)
 
@@ -94,17 +94,14 @@ class TubeCommandGenerator:
         Расстояния между рядами игл из self.params["needles_dist_y"]
 
         """
-        # Длина окружности
-        circle_len = self.get_circle_len(revolution)
         # Величина смещения игольницы по окружности
-        num_of_needle_rows = self.params.get('num_of_needle_rows', 1) # <--- значение по умолчению, пока в гуи нет этого поля
-        # NEEDLES_DIST_Y = self.params.get("needles_dist_y", self.config.NEEDLES_DIST_Y)
-        if num_of_needle_rows == 1:
+        if self.params.get('num_of_needle_rows') == 1:
             radial_head_offset = 2
         else:
-            radial_head_offset = num_of_needle_rows * self.config.NEEDLES_DIST_Y
+            radial_head_offset = self.params.get('num_of_needle_rows') * self.params['needle_step_Y']
 
         # Идеальное количество шагов
+        circle_len = self.get_circle_len(revolution)
         ideal_steps = circle_len / self.params['punch_step_r']
 
         # Два ближайших варианта, кратных radial_head_offset
@@ -135,13 +132,13 @@ class TubeCommandGenerator:
         x_step_offset_1 = 0
         x_step_offset_2 = (x_step_count - 1) * x_step_size
     
-        x_substep_count = round(self.params['needle_step'] / volumetric_density)
-        x_substep_size = round(self.params['needle_step'] / volumetric_density / x_substep_count ) # params['punch_step_r']
+        x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
+        x_substep_size = round(self.params['needle_step_X'] / volumetric_density / x_substep_count ) # params['punch_step_r']
         x_substep_offset_1 = 0
         x_substep_offset_2 = (x_substep_count - 1) * x_substep_size
   
         section_count = volumetric_density # количество оборотов для заполнения полного паттерна вдоль Х (int)
-        section_size = self.params['needle_step'] / section_count
+        section_size = self.params['needle_step_X'] / section_count
 
         commands = []
         random_offset_it = iter(self.random_offsets)
@@ -194,21 +191,20 @@ class TubeCommandGenerator:
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
         num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
-        # NEEDLES_DIST_Y = self.params.get("needles_dist_y", self.config.NEEDLES_DIST_Y)
 
         x_step_count = math.ceil(self.params['tube_len'] / self.params['punch_head_len'])
         x_step_size = self.params['punch_head_len']
         x_step_offset_1 = 0
         x_step_offset_2 = (x_step_count - 1) * x_step_size
 
-        x_substep_count = round(self.params['needle_step'] / volumetric_density)
+        x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
         x_substep_size = round(
-            self.params['needle_step'] / volumetric_density / x_substep_count)  # params['punch_step_r']
+            self.params['needle_step_X'] / volumetric_density / x_substep_count)  # params['punch_step_r']
         x_substep_offset_1 = 0
         x_substep_offset_2 = (x_substep_count - 1) * x_substep_size
 
         section_count = volumetric_density  # количество оборотов для заполнения полного паттерна вдоль Х (int)
-        section_size = self.params['needle_step'] / section_count
+        section_size = self.params['needle_step_X'] / section_count
 
         commands = []
         random_offset_it = iter(self.random_offsets)
@@ -219,10 +215,10 @@ class TubeCommandGenerator:
 
             for angle_step in range(angle_step_count):
 
-                circumferential_head_step = num_of_needle_rows * self.config.NEEDLES_DIST_Y
+                circumferential_head_step = num_of_needle_rows * self.params['needle_step_Y']
                 # пробиваем зоны между иглами (в радиальном направлении)
                 # если заполнили то делаем проворот на всю длину игольницы
-                if self.config.NEEDLES_DIST_Y <= (angle_step % circumferential_head_step) <= (circumferential_head_step-1):
+                if self.params['needle_step_Y'] <= (angle_step % circumferential_head_step) <= (circumferential_head_step-1):
                     # просто проворачиваем
                     # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
                     angle_deg = round(360 * (revolution + self.revolution_offset) + angle_step_size * angle_step, 3)
