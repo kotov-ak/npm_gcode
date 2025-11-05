@@ -128,8 +128,8 @@ class ParameterValidator:
             (params_dict['punch_step_r'] not in self.limits.ALLOWED_PUNCH_STEPS, 'punch_step_r',
              f"Шаг пробития должен быть {', '.join(map(str, self.limits.ALLOWED_PUNCH_STEPS))} мм (получено: {params_dict['punch_step_r']})"),
 
-            (params_dict['needle_step'] != self.limits.REQUIRED_NEEDLE_STEP, 'needle_step',
-             f"Шаг игл должен быть равен {self.limits.REQUIRED_NEEDLE_STEP} мм (получено: {params_dict['needle_step']})")
+            (params_dict['needle_step_X'] != self.limits.REQUIRED_NEEDLE_STEP, 'needle_step_X',
+             f"Шаг игл должен быть равен {self.limits.REQUIRED_NEEDLE_STEP} мм (получено: {params_dict['needle_step_X']})")
         ]
 
         for check_failed, param_name, error_message in checks:

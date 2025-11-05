@@ -79,7 +79,7 @@ class GeometryCalculator:
             total_fabric_len += circle_len
 
         zones_per_crank = m.ceil(self.params['tube_len'] / self.params['punch_head_len'])
-        punches_in_zone = round(self.params['needle_step'] / self.diam_coef)
+        punches_in_zone = round(self.params['needle_step_X'] / self.diam_coef)
         total_punches = punches_in_zone * zones_per_crank * total_cranks
 
         return total_punches, total_fabric_len, zones_per_crank, punches_in_zone

@@ -78,7 +78,8 @@ advanced_dict = dict(
     o_diam=132, # 300-
     fabric_thickness=0.6, # 0.6
     punch_step_r=1, # 1
-    needle_step=8, # 8
+    needle_step_X=8, # 8
+    needle_step_Y=8, # 8-16
     volumetric_density=25,
     punch_head_len=264, # 264
     punch_depth=14, # 12+
@@ -86,8 +87,9 @@ advanced_dict = dict(
     support_depth=5,
     idling_speed=5000, # 3000-5000
     move_speed=1500, # 1500
-    rotate_speed=1000,
-    random_border=0.25# 1000
+    rotate_speed=1000, # 1000
+    random_border=0.5, # 0-0.5
+    num_of_needle_rows=1, # количество рядов игл
 )
 
 
