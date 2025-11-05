@@ -32,14 +32,14 @@ class TubeCommandGenerator:
         """
         return math.ceil(X / divisor) * divisor
 
-    def reorder_range(x):
+    def reorder_range(self,x):
         """
         Переставляет числа от 0 до x-1, чередуя первую и вторую половину.
         Например: [0,1,2,3,4] -> [0,3,1,4,2]
         """
         lst = list(range(x))
         mid = (x + 1) // 2
-        return [i for pair in zip_longest(lst[:mid], lst[mid:]) 
+        return [i for pair in zip_longest(lst[:mid], lst[mid:])
                 for i in pair if i is not None]
             
     def calclulate_number_of_revolutions(self):
@@ -169,7 +169,7 @@ class TubeCommandGenerator:
                 commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
                 for x_step in range(x_step_count):
                     for x_substep in range(x_substep_count):
-                    # for x_substep in reorder_range(x_substep_count): #  новая версия, раскомментировать вместе с апдейтом тестов
+                    # for x_substep in self.reorder_range(x_substep_count): #  новая версия, раскомментировать вместе с апдейтом тестов
                         random_offset = next(random_offset_it)
 
                         x_snake_offset = (angle_step % 2) * x_substep_size / 2
@@ -195,7 +195,7 @@ class TubeCommandGenerator:
                                   x_substep_offset +
                                   x_step_offset, 3)
                         y = round(0 - self.params['fabric_thickness'] * revolution, 3)
-                        z = round(0 - support_offset, 3)
+                        z = round(0 - self.params['fabric_thickness'] * revolution - support_offset, 3)
 
                         y_punch = y + self.params['punch_depth'] + self.params['punch_offset']
                         z_punch = z + support_depth
