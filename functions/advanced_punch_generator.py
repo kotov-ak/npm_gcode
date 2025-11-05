@@ -114,7 +114,7 @@ if __name__ == '__main__':
         'needle_step_X': 8,
         'needle_step_Y': 8,
         'volumetric_density': 25,
-        'punch_head_len': 264,
+        'head_len': 264,
         'punch_depth': 14,
         'punch_offset': 10,
         'support_depth': 5,

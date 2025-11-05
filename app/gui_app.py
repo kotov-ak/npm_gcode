@@ -13,7 +13,7 @@ from functions.prod_functions import (
     current_time, write_in_file_by_lines, check_params_for_validity
 )
 from constants.const import *
-from functions.tube_g_code_generator import *
+from functions.prod_functions import *
 from visualization import create_punch_visualization
 
 # Настройки DPI для корректного отображения на мониторах
@@ -140,7 +140,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
                        self.punch_step_r,
                        self.needle_step,
                        self.volumetric_density,
-                       self.punch_head_len,
+                       self.head_len,
                        self.punch_depth,
                        self.needle_offset,
                        self.shoe_depth,

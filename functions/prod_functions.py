@@ -5,6 +5,7 @@ from datetime import datetime
 from functions.parameter_validator import ParameterValidator
 from functions.advanced_punch_generator import CommandLinesGenerator
 from functions.time_calc import time_prediction_motioncommand
+from functions.advanced_punch_generator import CommandLinesGenerator
 
 
 def current_time():
@@ -93,3 +94,17 @@ def calculate_execution_time(params_dict):
     generator = CommandLinesGenerator(params_dict)
     commands = generator.generate_commands_only()
     return time_prediction_motioncommand(commands)
+
+def generate_command_lines(params_dict):
+    """
+    Генерация G-кода для пробития треугольного паттерна радиально-спиральным методом
+    со случайными смещениями игл для равномерного покрытия.
+
+    Args:
+        params_dict (dict): Словарь параметров пробития
+
+    Returns:
+        list: Список строк G-кода с переносами строк
+    """
+    generator = CommandLinesGenerator(params_dict)
+    return generator.generate_radial_spiral_pattern()

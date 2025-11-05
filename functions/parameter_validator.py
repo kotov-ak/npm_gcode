@@ -79,8 +79,8 @@ class ParameterValidator:
              f"Внешний диаметр должен быть > {self.limits.MIN_FABRIC_THICKNESS} мм (получено: {params_dict['fabric_thickness']})"),
 
             # Игольница
-            (params_dict['punch_head_len'] <= self.limits.MIN_PUNCH_HEAD_LENGTH - 0.001, 'punch_head_len',
-             f"Длина игольницы должна быть > {self.limits.MIN_PUNCH_HEAD_LENGTH} мм (получено: {params_dict['punch_head_len']})"),
+            (params_dict['head_len'] <= self.limits.MIN_PUNCH_HEAD_LENGTH - 0.001, 'head_len',
+             f"Длина игольницы должна быть > {self.limits.MIN_PUNCH_HEAD_LENGTH} мм (получено: {params_dict['head_len']})"),
 
             # Пробитие
             (params_dict['punch_depth'] >= self.limits.MAX_PUNCH_DEPTH + 0.001, 'punch_depth',
