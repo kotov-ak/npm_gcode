@@ -71,7 +71,7 @@ class GCodeFileFormatter:
             f'Needles step X => {self.params["needle_step_X"]}',
             f'Needles step Y => {self.params["needle_step_Y"]}',
             f'Volumetric density => {self.params["volumetric_density"]}',
-            f'Punch head len => {self.params["punch_head_len"]}',
+            f'Punch head len => {self.params["head_len"]}',
             f'Punch depth => {self.params["punch_depth"]}',
             f'Shoe depth => {self.params["support_depth"]}',
             f'Punch offset => {self.params["punch_offset"]}',

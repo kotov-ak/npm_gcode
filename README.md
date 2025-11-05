@@ -128,7 +128,7 @@ NPM_GUI_APP_yyyy-mm-dd/
     -    *Влияние:* Определяет (накладывает ограничения) значение для параметров `punch_step_r` и `volumetric_density`.
 Изменение этого параметра требует пересмотра остальных.
 
-*   **`punch_head_len`** - Длина игольницы 
+*   **`head_len`** - Длина игольницы 
     -    *Смысл:* Расстояние между крайними иглами игольницы плюс `needle_step`.  
     -    *Диапазон:* Возможное значение 264 (32*8+8) мм.
     -    *Влияние:* Нужно для корректного формирования паттерна в случае нескольких зон пробития (2 и более)
@@ -205,7 +205,7 @@ NPM_GUI_APP_yyyy-mm-dd/
 **Функция:** `validate_all_parameters()`
 
 ## 3. Генерация G-кода
-**Файл:** `tube_g_code_generator.py`  
+**Файл:** `prod_functions.py`  
 **Функция:** `generate_command_lines()`
 
 ## 4. Координация процесса
@@ -250,7 +250,7 @@ NPM_GUI_APP_yyyy-mm-dd/
 
 `prod_functions.py` → 
 `parameter_validator.py` → 
-`tube_g_code_generator.py` → 
+`prod_functions.py` → 
 `advanced_punch_generator.py` → 
 `tube_command_generator.py` → 
 `motion_commands.py` → 

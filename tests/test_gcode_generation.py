@@ -13,7 +13,7 @@ from typing import List, Dict, Tuple
 # Добавляем родительский каталог в путь для импорта модулей
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from functions.tube_g_code_generator import generate_command_lines
+from functions.prod_functions import generate_command_lines
 
 
 class TestGCodeGeneration(unittest.TestCase):
@@ -30,7 +30,7 @@ class TestGCodeGeneration(unittest.TestCase):
             'needle_step_X': 8,
             'needle_step_Y': 8,
             'volumetric_density': 25,
-            'punch_head_len': 264,
+            'head_len': 264,
             'punch_depth': 14,
             'punch_offset': 10,
             'support_depth': 5,
