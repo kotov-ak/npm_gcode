@@ -195,7 +195,7 @@ class TubeCommandGenerator:
                                   x_substep_offset +
                                   x_step_offset, 3)
                         y = round(0 - self.params['fabric_thickness'] * revolution, 3)
-                        z = round(0 - self.params['fabric_thickness'] * revolution - support_offset, 3)
+                        z = round(0 - support_offset, 3)
 
                         y_punch = y + self.params['punch_depth'] + self.params['punch_offset']
                         z_punch = z + support_depth
