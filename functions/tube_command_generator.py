@@ -67,8 +67,8 @@ class TubeCommandGenerator:
         if (len(commands) > 0):
             commands.append(PunchCommands.waiting())
 
-        support_offset = self.params['fabric_thickness'] * revolutions
-        commands_for_virtual_stitching = self.generate_commands(self.config.EXTRA_ROTATIONS, support_offset=support_offset)
+        fix_z_offset = self.params['fabric_thickness'] * revolutions
+        commands_for_virtual_stitching = self.generate_commands(self.config.EXTRA_ROTATIONS, fix_z_offset=fix_z_offset)
         commands.extend(commands_for_virtual_stitching)
 
         return commands
@@ -119,7 +119,7 @@ class TubeCommandGenerator:
 
         return final_steps
 
-    def generate_commands(self, revolutions, support_offset=None):
+    def generate_commands(self, revolutions, fix_z_offset=None):
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
         num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
@@ -185,8 +185,7 @@ class TubeCommandGenerator:
                         start_x_substep_offset = x_substep_offset_1 if direction else x_substep_offset_2
                         x_substep_offset = abs(x_substep_size * x_substep - start_x_substep_offset)
 
-                        support_offset = support_offset if support_offset is not None else self.params[
-                                                                                               'fabric_thickness'] * revolution
+                        z_offset = fix_z_offset if fix_z_offset is not None else self.params['fabric_thickness'] * revolution
 
                         # random_offset = 0
                         x = round(random_offset +
@@ -195,7 +194,7 @@ class TubeCommandGenerator:
                                   x_substep_offset +
                                   x_step_offset, 3)
                         y = round(0 - self.params['fabric_thickness'] * revolution, 3)
-                        z = round(0 - support_offset, 3)
+                        z = round(0 - z_offset, 3)
 
                         y_punch = y + self.params['punch_depth'] + self.params['punch_offset']
                         z_punch = z + support_depth
