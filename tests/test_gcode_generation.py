@@ -22,20 +22,20 @@ class TestGCodeGeneration(unittest.TestCase):
     def setUp(self):
         """Настройка перед каждым тестом"""
         self.test_params = {
-            'tube_len': 264,
-            'i_diam': 10,
-            'o_diam': 10,
-            'fabric_thickness': 1.0,
+            'tube_len': 528,
+            'i_diam': 60,
+            'o_diam': 70,
+            'fabric_thickness': 1,
             'punch_step_r': 1,
             'needle_step_X': 8,
             'needle_step_Y': 8,
             'volumetric_density': 25,
             'head_len': 264,
-            'punch_depth': 14,
+            'punch_depth': 15,
             'punch_offset': 10,
             'support_depth': 5,
-            'idling_speed': 6000,
-            'move_speed': 1200,
+            'idling_speed': 5000,
+            'move_speed': 1000,
             'rotate_speed': 2000,
             'random_border':0.5,
             'num_of_needle_rows': 1
@@ -385,9 +385,11 @@ class TestGCodeGeneration(unittest.TestCase):
                             })
             else:
                 # Различия вне допуска
-                self.fail(f"Команда в строке {line_num} различается: {error_msg}\n"
-                         f"  Gen: {gen_clean}\n"
-                         f"  Ref: {ref_clean}")
+                msg = f"Команда в строке {line_num} различается: {error_msg}\n"
+                msg += f"  Gen: {gen_clean}\n"
+                msg += f"  Ref: {ref_clean}"
+                print(msg)
+                self.fail(msg)
 
     def _compare_command_structure(self, gen_cmd: str, ref_cmd: str, line_num: int):
         """Сравнение структуры отдельной команды (без учета комментариев)"""
@@ -444,9 +446,9 @@ class TestGCodeGeneration(unittest.TestCase):
         header_text = '\n'.join(generated[:30])  # Первые 30 строк
 
         # Проверяем основные параметры
-        self.assertIn('Tube length => 264', header_text, "Параметр tube_len не найден")
-        self.assertIn('Internal diameter => 10', header_text, "Параметр i_diam не найден")
-        self.assertIn('Outer diameter => 10', header_text, "Параметр o_diam не найден")
+        self.assertIn('Tube length => 528', header_text, "Параметр tube_len не найден")
+        self.assertIn('Internal diameter => 60', header_text, "Параметр i_diam не найден")
+        self.assertIn('Outer diameter => 70', header_text, "Параметр o_diam не найден")
         self.assertIn('Volumetric density => 25', header_text, "Параметр volumetric_density не найден")
 
     def _print_tolerance_statistics(self):

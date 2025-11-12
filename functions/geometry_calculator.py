@@ -60,7 +60,7 @@ class GeometryCalculator:
 
         return current_diameter, circle_len, steps_num_final, step_size_final
 
-    def calculate_total_punches(self, total_rotation_num):
+    def calculate_total_punches(self, main_rotation_num, total_rotation_num):
         """
         Предварительный расчет общего количества пробитий
 
@@ -73,10 +73,11 @@ class GeometryCalculator:
         total_cranks = 0
         total_fabric_len = 0
 
-        for i in range(total_rotation_num):
-            current_diameter, circle_len, steps_num_final, _ = self.calculate_layer_parameters(i)
+        for rotation in range(total_rotation_num):
+            current_diameter, circle_len, steps_num_final, _ = self.calculate_layer_parameters(rotation)
             total_cranks += steps_num_final
-            total_fabric_len += circle_len
+            if rotation < main_rotation_num:
+                total_fabric_len += circle_len
 
         zones_per_crank = m.ceil(self.params['tube_len'] / self.params['head_len'])
         punches_in_zone = round(self.params['needle_step_X'] / self.diam_coef)
