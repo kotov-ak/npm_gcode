@@ -133,24 +133,29 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
 
     def input_values_update(self):
         """Считывание данных введенных вручную"""
-        values_list = [self.tube_len,
-                       self.i_dia,
-                       self.o_dia,
-                       self.fab_thick,
-                       self.punch_step_r,
-                       self.needle_step,
-                       self.volumetric_density,
-                       self.head_len,
-                       self.punch_depth,
-                       self.needle_offset,
-                       self.shoe_depth,
-                       self.idling_speed,
-                       self.move_speed,
-                       self.rotate_speed,
-                       self.random_border]
+        data_field_to_widget = {
+            'tube_len': self.tube_len,
+            'i_diam': self.i_dia,
+            'o_diam': self.o_dia,
+            'fabric_thickness': self.fab_thick,
+            'punch_step_r': self.punch_step_r,
+            'needle_step_X': self.needle_step,
+            'volumetric_density': self.volumetric_density,
+            'head_len': self.punch_head_len,
+            'punch_depth': self.punch_depth,
+            'punch_offset': self.needle_offset,
+            'support_depth': self.shoe_depth,
+            'idling_speed': self.idling_speed,
+            'move_speed': self.move_speed,
+            'rotate_speed': self.rotate_speed,
+            'random_border': self.random_border
+        }
+
+        if len(advanced_dict) != len(data_field_to_widget):
+            print("Warning! Не все поля advanced_dict обновляются в gui")
 
         try:
-            for key, widget in zip(advanced_dict.keys(), values_list):
+            for key, widget in data_field_to_widget.items():
                 advanced_dict[key] = widget.value()
             return True
         except Exception as e:
@@ -261,7 +266,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
         try:
             # Создаем путь для HTML файла
             html_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                                   "viz/visualization.html")
+                                   "visualization.html")
 
             print(f"[GUI] Запуск визуализации с путем: {html_path}")
             print("[GUI] Параметры визуализации:")
