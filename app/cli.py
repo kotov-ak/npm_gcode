@@ -12,7 +12,7 @@ file_path = '../gcode/g_code_random.txt'
 
 
 punch_params_dict = dict(
-    tube_len=300,
+    tube_len=200,
     i_diam=80, # 60+
     o_diam=100, # 300-
     fabric_thickness=0.5, # 0.6

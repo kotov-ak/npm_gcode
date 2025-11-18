@@ -120,24 +120,108 @@ class TubeCommandGenerator:
 
         return final_steps
 
+    # def generate_commands(self, revolutions, fix_z_offset=None):
+    #     volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
+    #     support_depth = self.params['support_depth']
+    #     num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
+    #
+    #     x_step_count = math.ceil(self.params['tube_len'] / self.params['head_len'])
+    #     x_step_size = self.params['head_len']
+    #     x_step_offset_1 = 0
+    #     x_step_offset_2 = (x_step_count - 1) * x_step_size
+    #
+    #     x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
+    #     x_substep_size = round(
+    #         self.params['needle_step_X'] / volumetric_density / x_substep_count)  # params['punch_step_r']
+    #     x_substep_offset_1 = 0
+    #     x_substep_offset_2 = (x_substep_count - 1) * x_substep_size
+    #
+    #     section_count = volumetric_density  # количество оборотов для заполнения полного паттерна вдоль Х (int)
+    #     section_size = self.params['needle_step_X'] / section_count
+    #
+    #     commands = []
+    #
+    #     start = self.completed_revolutions
+    #     finish = self.completed_revolutions + revolutions
+    #     for revolution in range(start, finish):
+    #         angle_step_count = self.get_angle_steps_count(revolution)
+    #         angle_step_size = 360 / angle_step_count
+    #
+    #         for angle_step in range(angle_step_count):
+    #             # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
+    #             angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
+    #
+    #             circumferential_head_step = num_of_needle_rows * self.params['needle_step_Y']
+    #             # пробиваем зоны между иглами (в радиальном направлении)
+    #             # если заполнили то делаем проворот на всю длину игольницы
+    #             if self.params['needle_step_Y'] <= (angle_step % circumferential_head_step) <= (circumferential_head_step - 1):
+    #                 # просто проворачиваем
+    #                 # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
+    #                 # angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
+    #                 direction = not bool(
+    #                     (revolution * angle_step_count + angle_step) % 2)  # самый первый удар имеет направление true
+    #
+    #                 commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
+    #
+    #                 continue
+    #
+    #             direction = not bool(
+    #                 (revolution * angle_step_count + angle_step) % 2)  # самый первый удар имеет направление true
+    #
+    #             commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
+    #             for x_step in range(x_step_count):
+    #                 for x_substep in range(x_substep_count):
+    #                     print(f'Step: {x_step}/{x_step_count}')
+    #                     print(f'Substep: {x_substep}/{x_substep_count}')
+    #
+    #                 # for x_substep in self.reorder_range(x_substep_count): #  новая версия, раскомментировать вместе с апдейтом тестов
+    #                     random_offset = self.random_offsets[self.punch_counter]
+    #                     self.punch_counter += 1
+    #                     x_snake_offset = (angle_step % 2) * x_substep_size / 2
+    #
+    #                     # смещение для слоя (каждый полный оборот)
+    #                     x_section_offset = (revolution % section_count) * section_size
+    #
+    #                     # поддержка обратного движения (для змейкообразного паттерна)
+    #                     start_x_step_offset = x_step_offset_1 if direction else x_step_offset_2
+    #                     x_step_offset = abs(x_step_size * x_step - start_x_step_offset)
+    #
+    #                     # поддержка обратного движения (для змейкообразного паттерна)
+    #                     start_x_substep_offset = x_substep_offset_1 if direction else x_substep_offset_2
+    #                     x_substep_offset = abs(x_substep_size * x_substep - start_x_substep_offset)
+    #
+    #                     y_offset = self.params['fabric_thickness'] * revolution
+    #                     z_offset = fix_z_offset if fix_z_offset is not None else self.params['fabric_thickness'] * revolution
+    #
+    #                     # random_offset = 0
+    #                     x = round(random_offset +
+    #                               x_snake_offset +
+    #                               x_section_offset +
+    #                               x_substep_offset +
+    #                               x_step_offset, 3)
+    #                     y = round(0 - y_offset, 3)
+    #                     z = round(0 - z_offset, 3)
+    #
+    #                     y_punch = y + self.params['punch_depth'] + self.params['punch_offset']
+    #                     z_punch = z + support_depth
+    #
+    #                     commands.append(PunchCommands.approach(x, y, z, self.params['idling_speed']))
+    #                     commands.append(PunchCommands.punch(x, y_punch, z_punch, self.params['move_speed']))
+    #                     commands.append(PunchCommands.retract(x, y, z, self.params['move_speed']))
+    #
+    #     self.completed_revolutions += revolutions # Сохраняем для следующих вызовов функции
+    #     return commands
+
     def generate_commands(self, revolutions, fix_z_offset=None):
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
         num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
 
         x_step_count = math.ceil(self.params['tube_len'] / self.params['head_len'])
-        x_step_size = self.params['head_len']
-        x_step_offset_1 = 0
-        x_step_offset_2 = (x_step_count - 1) * x_step_size
-
         x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
-        x_substep_size = round(
-            self.params['needle_step_X'] / volumetric_density / x_substep_count)  # params['punch_step_r']
-        x_substep_offset_1 = 0
-        x_substep_offset_2 = (x_substep_count - 1) * x_substep_size
 
-        section_count = volumetric_density  # количество оборотов для заполнения полного паттерна вдоль Х (int)
-        section_size = self.params['needle_step_X'] / section_count
+        # Ваша последовательность значений X
+        target_x_sequence = [0.0, 4.0, 4.5, 0.5, 2.0, 6.0, 6.5, 2.5, 1.0, 5.0, 5.5, 1.5, 3.0, 7.0, 7.5, 3.5]
 
         commands = []
 
@@ -148,54 +232,32 @@ class TubeCommandGenerator:
             angle_step_size = 360 / angle_step_count
 
             for angle_step in range(angle_step_count):
-                # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
                 angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
 
                 circumferential_head_step = num_of_needle_rows * self.params['needle_step_Y']
-                # пробиваем зоны между иглами (в радиальном направлении)
-                # если заполнили то делаем проворот на всю длину игольницы
-                if self.params['needle_step_Y'] <= (angle_step % circumferential_head_step) <= (circumferential_head_step - 1):
-                    # просто проворачиваем
-                    # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
-                    # angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
-                    direction = not bool(
-                        (revolution * angle_step_count + angle_step) % 2)  # самый первый удар имеет направление true
-
+                if self.params['needle_step_Y'] <= (angle_step % circumferential_head_step) <= (
+                        circumferential_head_step - 1):
                     commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
-
                     continue
 
-                direction = not bool(
-                    (revolution * angle_step_count + angle_step) % 2)  # самый первый удар имеет направление true
-
                 commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
+
                 for x_step in range(x_step_count):
                     for x_substep in range(x_substep_count):
-                    # for x_substep in self.reorder_range(x_substep_count): #  новая версия, раскомментировать вместе с апдейтом тестов
                         random_offset = self.random_offsets[self.punch_counter]
                         self.punch_counter += 1
-                        x_snake_offset = (angle_step % 2) * x_substep_size / 2
 
-                        # смещение для слоя (каждый полный оборот)
-                        x_section_offset = (revolution % section_count) * section_size
+                        # ПРИВЯЗЫВАЕМ К УГЛУ, а не к обороту
+                        total_angle_steps = revolution * angle_step_count + angle_step
+                        sequence_index = (total_angle_steps * x_step_count * x_substep_count +
+                                          x_step * x_substep_count + x_substep) % len(target_x_sequence)
 
-                        # поддержка обратного движения (для змейкообразного паттерна)
-                        start_x_step_offset = x_step_offset_1 if direction else x_step_offset_2
-                        x_step_offset = abs(x_step_size * x_step - start_x_step_offset)
-
-                        # поддержка обратного движения (для змейкообразного паттерна)
-                        start_x_substep_offset = x_substep_offset_1 if direction else x_substep_offset_2
-                        x_substep_offset = abs(x_substep_size * x_substep - start_x_substep_offset)
+                        x = round(random_offset + target_x_sequence[sequence_index], 3)
 
                         y_offset = self.params['fabric_thickness'] * revolution
-                        z_offset = fix_z_offset if fix_z_offset is not None else self.params['fabric_thickness'] * revolution
+                        z_offset = fix_z_offset if fix_z_offset is not None else self.params[
+                                                                                     'fabric_thickness'] * revolution
 
-                        # random_offset = 0
-                        x = round(random_offset +
-                                  x_snake_offset +
-                                  x_section_offset +
-                                  x_substep_offset +
-                                  x_step_offset, 3)
                         y = round(0 - y_offset, 3)
                         z = round(0 - z_offset, 3)
 
@@ -206,8 +268,9 @@ class TubeCommandGenerator:
                         commands.append(PunchCommands.punch(x, y_punch, z_punch, self.params['move_speed']))
                         commands.append(PunchCommands.retract(x, y, z, self.params['move_speed']))
 
-        self.completed_revolutions += revolutions # Сохраняем для следующих вызовов функции
+        self.completed_revolutions += revolutions
         return commands
+
 
     def get_generation_statistics(self) -> dict:
         """
