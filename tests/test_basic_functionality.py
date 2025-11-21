@@ -32,6 +32,8 @@ class TestBasicFunctionality(unittest.TestCase):
             'head_len': 264,
             'punch_depth': 14,
             'punch_offset': 10,
+            'zero_offset_Y': 10,
+            'zero_offset_Z': 0,
             'support_depth': 5,
             'idling_speed': 6000,
             'move_speed': 1200,

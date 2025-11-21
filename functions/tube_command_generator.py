@@ -196,8 +196,8 @@ class TubeCommandGenerator:
                                   x_section_offset +
                                   x_substep_offset +
                                   x_step_offset, 3)
-                        y = round(0 - y_offset, 3)
-                        z = round(0 - z_offset, 3)
+                        y = round(self.params['zero_offset_Y'] - self.params['punch_offset'] - y_offset, 3)
+                        z = round(self.params['zero_offset_Z'] - z_offset, 3)
 
                         y_punch = y + self.params['punch_depth'] + self.params['punch_offset']
                         z_punch = z + support_depth
