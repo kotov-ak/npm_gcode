@@ -4,11 +4,8 @@
 """
 
 import numpy as np
-import math as m
 import plotly.graph_objects as go
-from typing import List
 import traceback
-import sys
 
 from functions.tube_command_generator import TubeCommandGenerator
 from functions.motion_commands import MotionCommand, CommandType
@@ -53,13 +50,11 @@ def create_punch_visualization(params: dict, html_path: str = "visualization.htm
         all_hits = []
         turn_idx = 0
         current_angle = 0
-        previous_angle = 0
         approach_count = 0
         previous_turn_angle = 0
         for i, cmd in enumerate(commands):
             try:
                 if cmd.a is not None:  # Команда с поворотом
-                    previous_angle = current_angle
                     current_angle = cmd.a
                     # Проверяем, начался ли новый оборот (если угол уменьшился значительно)
                     if current_angle - previous_turn_angle >= 360.0:
@@ -132,7 +127,7 @@ def draw_visualization(all_hits, params, nTurns, html_path="visualization.html")
     print(f"[ВИЗУАЛИЗАЦИЯ] Диаметр цилиндра: {StartDiameter}")
 
     # Геометрия цилиндра
-    length = params.get('tube_len', 30.0)
+    length = params['tube_len']
     print(f"[ВИЗУАЛИЗАЦИЯ] Длина цилиндра: {length}")
 
     # Проверяем выходной путь
