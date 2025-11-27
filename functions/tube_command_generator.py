@@ -50,8 +50,11 @@ class TubeCommandGenerator:
     def calclulate_number_of_revolutions(self):
         diam_diff = self.params['o_diam'] - self.params['i_diam']
         ideal_rotation_num = diam_diff / (self.params['fabric_thickness'] * 2)
-        return round(ideal_rotation_num) # надо в большую сторону округлять или изменить логику
+        # return round(ideal_rotation_num) # надо в большую сторону округлять или изменить логику
         # return self.nearest_multiple(ideal_rotation_num, self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']])
+
+        number_of_layers_to_fill_the_entire_pattern = round(self.params['x_substep_count'] / self.params['x_substep_count_in_one_revolution']) # а если 7 на 2?
+        return self.nearest_multiple(ideal_rotation_num, number_of_layers_to_fill_the_entire_pattern)
     
     def generate_random_offsets(self, revolutions):
         total_cranks = 0
@@ -110,12 +113,12 @@ class TubeCommandGenerator:
         # Идеальное количество шагов
         circle_len = self.get_circle_len(revolution)
         ideal_steps = circle_len / self.params['punch_step_r']
-        print('ideal_steps:', ideal_steps)
+        # print('ideal_steps:', ideal_steps)
         # Два ближайших варианта, кратных radial_head_offset
         low_steps = max(radial_head_offset, math.floor(ideal_steps / radial_head_offset) * radial_head_offset)
         high_steps = math.ceil(ideal_steps / radial_head_offset) * radial_head_offset
-        print('low_steps:', low_steps)
-        print('high_steps:', high_steps)
+        # print('low_steps:', low_steps)
+        # print('high_steps:', high_steps)
         # Считаем шаги для каждого варианта
         step_low = circle_len / low_steps
         step_high = circle_len / high_steps
@@ -130,14 +133,14 @@ class TubeCommandGenerator:
         s = circle_len * self.params['needle_step_X']
         # volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         # x_substep_count_in_one_revolution = round(self.params['x_substep_count'] / volumetric_density)
-        x_substep_count_in_one_revolution = self.params['x_substep_count_in_one_revolution']
-        n = final_steps * x_substep_count_in_one_revolution
-        p = n / s
-        print("p =", p)
+        # x_substep_count_in_one_revolution = self.params['x_substep_count_in_one_revolution']
+        # n = final_steps * x_substep_count_in_one_revolution
+        # p = n / s
+        # print("p =", p)
         return final_steps
 
     def generate_commands(self, revolutions, fix_z_offset=None):
-        print(1)
+        # print(1)
         # volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
         num_of_needle_rows = self.params['num_of_needle_rows']
@@ -160,17 +163,23 @@ class TubeCommandGenerator:
         # section_count = volumetric_density  # количество оборотов для заполнения полного паттерна вдоль Х (int)
         # section_size = self.params['needle_step_X'] / section_count
 
-        section_count = self.params['x_substep_count'] / self.params['x_substep_count_in_one_revolution'] # а если 7 на 2?
-        section_size = self.params['needle_step_X'] / section_count
+        section_count = self.params['x_substep_count'] // self.params['x_substep_count_in_one_revolution'] # а если 7 на 2?
+        # section_size = self.params['needle_step_X'] / section_count
+        section_size = self.params['x_substep_count_in_one_revolution'] 
 
         commands = []
+
+        substeps_order = list(range(x_substep_count_in_one_revolution))
 
         start = self.completed_revolutions
         finish = self.completed_revolutions + revolutions
         for revolution in range(start, finish):
-            print(2)
+            # print(2)
             angle_step_count = self.get_angle_steps_count(revolution)
             angle_step_size = 360 / angle_step_count
+
+            section = revolution % section_count
+            start_substep_idx = section * section_size
 
             for angle_step in range(angle_step_count):
                 # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
@@ -195,7 +204,14 @@ class TubeCommandGenerator:
 
                 commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
                 for x_step in range(x_step_count):
+                    start = start_substep_idx
+                    finish = start_substep_idx + section_size
+                    # print(start)
+                    # print(finish)
+                    # print(substeps_order)
+
                     for x_substep in range(x_substep_count_in_one_revolution):
+                    # for x_substep in substeps_order[start:finish]:
                     # for x_substep in self.reorder_range(x_substep_count_in_one_revolution): #  новая версия, раскомментировать вместе с апдейтом тестов
                         random_offset = self.random_offsets[self.punch_counter]
                         self.punch_counter += 1
