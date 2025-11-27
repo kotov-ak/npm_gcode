@@ -40,7 +40,9 @@ class TestGCodeGeneration(unittest.TestCase):
             'move_speed': 1000,
             'rotate_speed': 2000,
             'random_border':0.5,
-            'num_of_needle_rows': 1
+            'num_of_needle_rows': 1,
+            'x_substep_count': 8,
+            'x_substep_count_in_one_revolution': 2,
         }
 
         self.reference_file = os.path.join(

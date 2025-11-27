@@ -30,7 +30,8 @@ punch_params_dict = dict(
     move_speed=1000, # 1500
     rotate_speed=2000, # 1000
     random_border=0, # 0-0.5
-    num_of_needle_rows=1 # количество рядов игл
+    num_of_needle_rows=1, # количество рядов игл
+    x_substep_count=8
 )
 
 if __name__ == '__main__':

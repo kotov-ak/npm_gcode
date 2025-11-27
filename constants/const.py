@@ -92,6 +92,7 @@ advanced_dict = dict(
     rotate_speed=1000, # 1000
     random_border=0.5, # 0-0.5
     num_of_needle_rows=1, # количество рядов игл
+    x_substep_count=8
 )
 
 

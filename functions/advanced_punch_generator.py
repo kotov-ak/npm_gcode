@@ -124,7 +124,8 @@ if __name__ == '__main__':
         'move_speed': 1200,
         'rotate_speed': 2000,
         'random_border': 0.25,
-        'num_of_needle_rows': 1
+        'num_of_needle_rows': 1,
+        'x_substep_count': 8
     }
             
     generator = CommandLinesGenerator(minimal_params)

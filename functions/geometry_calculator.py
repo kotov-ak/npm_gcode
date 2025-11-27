@@ -14,7 +14,8 @@ class GeometryCalculator:
         """
         self.params = params_dict
         self.config = GenerationConfig()
-        self.diam_coef = self.config.VOLUMETRIC_DENSITY_MAP[params_dict['volumetric_density']]
+        # self.diam_coef = self.config.VOLUMETRIC_DENSITY_MAP[params_dict['volumetric_density']]
+        self.diam_coef = round(self.params['x_substep_count'] / self.params['x_substep_count_in_one_revolution']) # а если 7 на 2?
 
     def calculate_rotation_parameters(self):
         """

@@ -1,4 +1,9 @@
-from typing import List, Iterator
+# Добавляем родительский каталог в путь для импорта модулей
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from typing import List
 import math
 import numpy as np
 from itertools import zip_longest
@@ -45,7 +50,8 @@ class TubeCommandGenerator:
     def calclulate_number_of_revolutions(self):
         diam_diff = self.params['o_diam'] - self.params['i_diam']
         ideal_rotation_num = diam_diff / (self.params['fabric_thickness'] * 2)
-        return self.nearest_multiple(ideal_rotation_num, self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']])
+        return round(ideal_rotation_num) # надо в большую сторону округлять или изменить логику
+        # return self.nearest_multiple(ideal_rotation_num, self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']])
     
     def generate_random_offsets(self, revolutions):
         total_cranks = 0
@@ -53,9 +59,10 @@ class TubeCommandGenerator:
             angle_step_count = self.get_angle_steps_count(revolution)
             total_cranks += angle_step_count
         x_step_count = math.ceil(self.params['tube_len'] / self.params['head_len'])
-        volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
-        x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
-        total_punches = x_substep_count * x_step_count * total_cranks
+        # volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]e
+        # x_substep_count_in_one_revolution = round(self.params['needle_step_X'] / volumetric_density)
+        x_substep_count_in_one_revolution = self.params['x_substep_count_in_one_revolution']
+        total_punches = x_substep_count_in_one_revolution * x_step_count * total_cranks
         self.random_offsets = self._generate_random_offsets(total_punches)
         self.punch_counter = 0
 
@@ -103,11 +110,12 @@ class TubeCommandGenerator:
         # Идеальное количество шагов
         circle_len = self.get_circle_len(revolution)
         ideal_steps = circle_len / self.params['punch_step_r']
-
+        print('ideal_steps:', ideal_steps)
         # Два ближайших варианта, кратных radial_head_offset
         low_steps = max(radial_head_offset, math.floor(ideal_steps / radial_head_offset) * radial_head_offset)
         high_steps = math.ceil(ideal_steps / radial_head_offset) * radial_head_offset
-
+        print('low_steps:', low_steps)
+        print('high_steps:', high_steps)
         # Считаем шаги для каждого варианта
         step_low = circle_len / low_steps
         step_high = circle_len / high_steps
@@ -118,25 +126,41 @@ class TubeCommandGenerator:
         else:
             final_steps = high_steps
 
+        # проверяем плотность
+        s = circle_len * self.params['needle_step_X']
+        # volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
+        # x_substep_count_in_one_revolution = round(self.params['x_substep_count'] / volumetric_density)
+        x_substep_count_in_one_revolution = self.params['x_substep_count_in_one_revolution']
+        n = final_steps * x_substep_count_in_one_revolution
+        p = n / s
+        print("p =", p)
         return final_steps
 
     def generate_commands(self, revolutions, fix_z_offset=None):
-        volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
+        print(1)
+        # volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
-        num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
+        num_of_needle_rows = self.params['num_of_needle_rows']
 
         x_step_count = math.ceil(self.params['tube_len'] / self.params['head_len'])
         x_step_size = self.params['head_len']
         x_step_offset_1 = 0
         x_step_offset_2 = (x_step_count - 1) * x_step_size
 
-        x_substep_count = round(self.params['needle_step_X'] / volumetric_density)
-        x_substep_size = round(
-            self.params['needle_step_X'] / volumetric_density / x_substep_count)  # params['punch_step_r']
-        x_substep_offset_1 = 0
-        x_substep_offset_2 = (x_substep_count - 1) * x_substep_size
+        x_substep_count = self.params['x_substep_count']
 
-        section_count = volumetric_density  # количество оборотов для заполнения полного паттерна вдоль Х (int)
+        # вот тут должна быть нормальная логика вычисления параметра для получения верной плотности пробивки
+        # x_substep_count_in_one_revolution = round(x_substep_count / volumetric_density)
+        x_substep_count_in_one_revolution = self.params['x_substep_count_in_one_revolution']
+
+        x_substep_size = self.params['needle_step_X'] / x_substep_count
+        x_substep_offset_1 = 0
+        x_substep_offset_2 = (x_substep_count_in_one_revolution - 1) * x_substep_size
+
+        # section_count = volumetric_density  # количество оборотов для заполнения полного паттерна вдоль Х (int)
+        # section_size = self.params['needle_step_X'] / section_count
+
+        section_count = self.params['x_substep_count'] / self.params['x_substep_count_in_one_revolution'] # а если 7 на 2?
         section_size = self.params['needle_step_X'] / section_count
 
         commands = []
@@ -144,6 +168,7 @@ class TubeCommandGenerator:
         start = self.completed_revolutions
         finish = self.completed_revolutions + revolutions
         for revolution in range(start, finish):
+            print(2)
             angle_step_count = self.get_angle_steps_count(revolution)
             angle_step_size = 360 / angle_step_count
 
@@ -170,8 +195,8 @@ class TubeCommandGenerator:
 
                 commands.append(PunchCommands.rotate(angle_deg, self.params['rotate_speed']))
                 for x_step in range(x_step_count):
-                    for x_substep in range(x_substep_count):
-                    # for x_substep in self.reorder_range(x_substep_count): #  новая версия, раскомментировать вместе с апдейтом тестов
+                    for x_substep in range(x_substep_count_in_one_revolution):
+                    # for x_substep in self.reorder_range(x_substep_count_in_one_revolution): #  новая версия, раскомментировать вместе с апдейтом тестов
                         random_offset = self.random_offsets[self.punch_counter]
                         self.punch_counter += 1
                         x_snake_offset = (angle_step % 2) * x_substep_size / 2
@@ -230,3 +255,33 @@ class TubeCommandGenerator:
             'punches_in_zone': punches_in_zone,
             'random_seed': self.config.RANDOM_SEED
         }
+    
+# Простая генерация для тестирования
+if __name__ == '__main__':
+    minimal_params = {
+        'tube_len': 528,
+        'i_diam': 60,
+        'o_diam': 70,
+        'fabric_thickness': 1.0,
+        'punch_step_r': 1, # изменяем этот параметр для получения заданной поверхностной плотности пробивки
+        'needle_step_X': 8,
+        'needle_step_Y': 8,
+        # 'volumetric_density': 45,e
+        'head_len': 264,
+        'punch_depth': 14,
+        'punch_offset': 10,
+        'zero_offset_Y': 100,
+        'zero_offset_Z': 100,
+        'support_depth': 5,
+        'idling_speed': 6000,
+        'move_speed': 1200,
+        'rotate_speed': 2000,
+        'random_border': 0.25,
+        'num_of_needle_rows': 1,
+        'x_substep_count': 8, # это влияет на форму паттерна
+        'x_substep_count_in_one_revolution': 2, # изменяем этот параметр для получения заданной поверхностной плотности пробивки
+    }
+            
+    generator = TubeCommandGenerator(minimal_params)
+    stat = generator.get_generation_statistics()
+    commands = generator.generate_punch_pattern_commands()

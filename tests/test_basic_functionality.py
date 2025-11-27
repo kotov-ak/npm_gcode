@@ -39,7 +39,9 @@ class TestBasicFunctionality(unittest.TestCase):
             'move_speed': 1200,
             'rotate_speed': 2000,
             'random_border':0.5,
-            'num_of_needle_rows': 1
+            'num_of_needle_rows': 1,
+            'x_substep_count': 8,
+            'x_substep_count_in_one_revolution': 2,
         }
 
     def test_generator_creation(self):
