@@ -72,6 +72,10 @@ class TestGCodeGeneration(unittest.TestCase):
         # Генерируем G-code
         print("Генерация G-code...")
         generated_lines = generate_command_lines(self.test_params)
+
+        with open("last_test_2.txt", "w") as f:
+            f.writelines(generated_lines)
+        
         self.assertIsInstance(generated_lines, list, "Результат должен быть списком")
         self.assertGreater(len(generated_lines), 0, "Сгенерированный список не должен быть пустым")
 

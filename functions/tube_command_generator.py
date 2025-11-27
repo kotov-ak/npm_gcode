@@ -169,7 +169,8 @@ class TubeCommandGenerator:
 
         commands = []
 
-        substeps_order = list(range(x_substep_count_in_one_revolution))
+        substeps_order = list(range(self.params['x_substep_count']))
+        print(substeps_order)
 
         start = self.completed_revolutions
         finish = self.completed_revolutions + revolutions
@@ -180,6 +181,10 @@ class TubeCommandGenerator:
 
             section = revolution % section_count
             start_substep_idx = section * section_size
+            # print(revolution, section, start_substep_idx)
+
+            print_one_rev = True
+            print_count = 2
 
             for angle_step in range(angle_step_count):
                 # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
@@ -210,8 +215,8 @@ class TubeCommandGenerator:
                     # print(finish)
                     # print(substeps_order)
 
-                    for x_substep in range(x_substep_count_in_one_revolution):
-                    # for x_substep in substeps_order[start:finish]:
+                    # for x_substep in range(x_substep_count_in_one_revolution):
+                    for x_substep in substeps_order[start:finish]:
                     # for x_substep in self.reorder_range(x_substep_count_in_one_revolution): #  новая версия, раскомментировать вместе с апдейтом тестов
                         random_offset = self.random_offsets[self.punch_counter]
                         self.punch_counter += 1
@@ -219,6 +224,7 @@ class TubeCommandGenerator:
 
                         # смещение для слоя (каждый полный оборот)
                         x_section_offset = (revolution % section_count) * section_size
+
 
                         # поддержка обратного движения (для змейкообразного паттерна)
                         start_x_step_offset = x_step_offset_1 if direction else x_step_offset_2
@@ -228,13 +234,19 @@ class TubeCommandGenerator:
                         start_x_substep_offset = x_substep_offset_1 if direction else x_substep_offset_2
                         x_substep_offset = abs(x_substep_size * x_substep - start_x_substep_offset)
 
+                        # if print_one_rev:
+                        # if print_count > 0:
+                        #     print(revolution, x_section_offset, x_substep_offset)
+                        #     print_one_rev = False
+                        #     print_count -= 1
+
                         y_offset = self.params['fabric_thickness'] * revolution
                         z_offset = fix_z_offset if fix_z_offset is not None else self.params['fabric_thickness'] * revolution
 
                         # random_offset = 0
                         x = round(random_offset +
                                   x_snake_offset +
-                                  x_section_offset +
+                                #   x_section_offset +
                                   x_substep_offset +
                                   x_step_offset, 3)
                         y = round(self.params['zero_offset_Y'] - self.params['punch_offset'] - y_offset, 3)
@@ -247,6 +259,7 @@ class TubeCommandGenerator:
                         commands.append(PunchCommands.punch(x, y_punch, z_punch, self.params['move_speed']))
                         commands.append(PunchCommands.retract(x, y, z, self.params['move_speed']))
 
+            # commands.append(PunchCommands.test())
         self.completed_revolutions += revolutions # Сохраняем для следующих вызовов функции
         return commands
 

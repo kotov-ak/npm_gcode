@@ -193,3 +193,8 @@ class PunchCommands:
     def waiting() -> MotionCommand:
         """Команда паузы для резки"""
         return MotionCommand.m_code(110, "Пауза для резки")
+    
+    @staticmethod
+    def test() -> MotionCommand:
+        """Команда паузы для резки"""
+        return MotionCommand.m_code(1, "")
