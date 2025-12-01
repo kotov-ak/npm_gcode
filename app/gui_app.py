@@ -95,6 +95,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
         dlg = QMessageBox(self)
         dlg.setWindowTitle("Описание текущей версии")
         dlg.setText(version_description)
+        dlg.setStyleSheet("QMessageBox QLabel { min-width: 300px}")
         dlg.exec()
 
     def text_to_info_out(self, text):
