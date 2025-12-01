@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>880</width>
-    <height>560</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>880</width>
-    <height>560</height>
+    <height>620</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>880</width>
-    <height>560</height>
+    <width>1000</width>
+    <height>740</height>
    </size>
   </property>
   <property name="font">
@@ -51,7 +51,7 @@ background-color: rgb(255, 243, 244);
       <x>310</x>
       <y>10</y>
       <width>561</width>
-      <height>311</height>
+      <height>371</height>
      </rect>
     </property>
     <property name="font">
@@ -83,7 +83,7 @@ background-color: rgb(255, 243, 244);
        <x>340</x>
        <y>30</y>
        <width>101</width>
-       <height>270</height>
+       <height>211</height>
       </rect>
      </property>
      <property name="font">
@@ -517,7 +517,7 @@ background-color: rgb(255, 243, 244);
        <x>119</x>
        <y>30</y>
        <width>101</width>
-       <height>270</height>
+       <height>211</height>
       </rect>
      </property>
      <property name="font">
@@ -714,7 +714,7 @@ background-color: rgb(255, 243, 244);
        <x>230</x>
        <y>30</y>
        <width>101</width>
-       <height>270</height>
+       <height>331</height>
       </rect>
      </property>
      <property name="font">
@@ -736,7 +736,7 @@ background-color: rgb(255, 243, 244);
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QLabel" name="needle_step_lbl">
+     <widget class="QLabel" name="needle_step_x_lbl">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -751,13 +751,13 @@ background-color: rgb(255, 243, 244);
        </font>
       </property>
       <property name="text">
-       <string>Шаг игл</string>
+       <string>Шаг игл X</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QDoubleSpinBox" name="needle_step">
+     <widget class="QDoubleSpinBox" name="needle_step_x">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -792,7 +792,7 @@ background-color: rgb(255, 243, 244);
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>100</y>
+        <y>160</y>
         <width>81</width>
         <height>40</height>
        </rect>
@@ -823,7 +823,7 @@ background-color: rgb(255, 243, 244);
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>140</y>
         <width>81</width>
         <height>16</height>
        </rect>
@@ -844,7 +844,7 @@ background-color: rgb(255, 243, 244);
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>160</y>
+        <y>220</y>
         <width>81</width>
         <height>40</height>
        </rect>
@@ -867,12 +867,15 @@ background-color: rgb(255, 243, 244);
       <property name="maximum">
        <double>10.000000000000000</double>
       </property>
+      <property name="singleStep">
+       <double>0.500000000000000</double>
+      </property>
      </widget>
      <widget class="QLabel" name="shoe_depth_lbl">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>140</y>
+        <y>200</y>
         <width>81</width>
         <height>16</height>
        </rect>
@@ -887,6 +890,113 @@ background-color: rgb(255, 243, 244);
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="needle_step_y">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>81</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="minimum">
+       <double>8.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>8.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="needle_step_x_lbl_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>Шаг игл Y</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="needle_row_num_lbl">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>260</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>Ряды игл</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="needle_row_num">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>280</y>
+        <width>81</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="minimum">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>5.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>2.000000000000000</double>
       </property>
      </widget>
     </widget>
@@ -971,7 +1081,7 @@ background-color: rgb(255, 243, 244);
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>100</y>
+        <y>220</y>
         <width>81</width>
         <height>40</height>
        </rect>
@@ -1002,7 +1112,7 @@ background-color: rgb(255, 243, 244);
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>200</y>
         <width>81</width>
         <height>20</height>
        </rect>
@@ -1019,6 +1129,104 @@ background-color: rgb(255, 243, 244);
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="zero_offset_y_lbl">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>81</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>Уст. нуля Y</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="zero_offset_y">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>81</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="zero_offset_z_lbl">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>Уст. нуля Z</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="zero_offset_z">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>160</y>
+        <width>81</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::NoButtons</enum>
+      </property>
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <double>100.000000000000000</double>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QGroupBox" name="punch_settings_group">
@@ -1027,7 +1235,7 @@ background-color: rgb(255, 243, 244);
       <x>10</x>
       <y>10</y>
       <width>281</width>
-      <height>311</height>
+      <height>371</height>
      </rect>
     </property>
     <property name="font">
@@ -1222,9 +1430,9 @@ background-color: rgb(255, 243, 244);
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>260</y>
+       <y>300</y>
        <width>261</width>
-       <height>41</height>
+       <height>61</height>
       </rect>
      </property>
      <property name="font">
@@ -1241,9 +1449,9 @@ background-color: rgb(255, 243, 244);
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>210</y>
+       <y>220</y>
        <width>261</width>
-       <height>41</height>
+       <height>61</height>
       </rect>
      </property>
      <property name="font">
@@ -1261,7 +1469,7 @@ background-color: rgb(255, 243, 244);
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
+      <y>400</y>
       <width>861</width>
       <height>171</height>
      </rect>
@@ -1309,7 +1517,7 @@ background-color: rgb(255, 243, 244);
      <x>0</x>
      <y>0</y>
      <width>880</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
