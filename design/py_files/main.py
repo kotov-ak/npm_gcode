@@ -16,7 +16,7 @@ class Ui_NPM_Code_Generator(object):
         NPM_Code_Generator.setObjectName("NPM_Code_Generator")
         NPM_Code_Generator.resize(880, 620)
         NPM_Code_Generator.setMinimumSize(QtCore.QSize(880, 620))
-        NPM_Code_Generator.setMaximumSize(QtCore.QSize(1000, 740))
+        NPM_Code_Generator.setMaximumSize(QtCore.QSize(880, 620))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
