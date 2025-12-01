@@ -28,7 +28,8 @@ class VisualizationConfig:
     ASPECT_MODE = 'data'
 
     # Настройки экспорта
-    INCLUDE_PLOTLYJS = "cdn"  # Возможные значения: True, False, "cdn", "inline"
+    # INCLUDE_PLOTLYJS = "cdn"  # Возможные значения: True, False, "cdn", "inline"
+    INCLUDE_PLOTLYJS = True # Возможные значения: True, False, "cdn", "inline"
 
     # Факторы для осветления цветов
     LIGHTEN_FACTOR = 0.55
