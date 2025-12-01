@@ -74,14 +74,13 @@ class TubeCommandGenerator:
 
         return commands
 
-    def _generate_random_offsets(self, total_punches: int) -> np.ndarray:
+    def _generate_random_offsets(self, total_punches) -> np.ndarray:
         """Генерация случайных смещений"""
         seed = self.config.RANDOM_SEED
         rng = np.random.default_rng(seed)
         a = 2 * self.config.CENTER_X - self.params['random_border']
         b = self.params['random_border']
-        return rng.uniform(a, b, size=total_punches)
-
+        return rng.uniform(a, b, size=round(total_punches))
     
     def get_circle_len(self, revolution):
         return math.pi * (self.params['i_diam'] + 2 * self.params['fabric_thickness'] * revolution)
@@ -95,10 +94,10 @@ class TubeCommandGenerator:
 
         """
         # Величина смещения игольницы по окружности
-        if self.params.get('num_of_needle_rows') == 1:
+        if self.params['num_of_needle_rows'] == 1:
             radial_head_offset = 2
         else:
-            radial_head_offset = self.params.get('num_of_needle_rows') * self.params['needle_step_Y']
+            radial_head_offset = self.params['num_of_needle_rows'] * self.params['needle_step_Y']
 
         # Идеальное количество шагов
         circle_len = self.get_circle_len(revolution)
@@ -123,7 +122,7 @@ class TubeCommandGenerator:
     def generate_commands(self, revolutions, fix_z_offset=None):
         volumetric_density = self.config.VOLUMETRIC_DENSITY_MAP[self.params['volumetric_density']]
         support_depth = self.params['support_depth']
-        num_of_needle_rows = self.params.get('num_of_needle_rows', 1)
+        num_of_needle_rows = self.params['num_of_needle_rows']
 
         x_step_count = math.ceil(self.params['tube_len'] / self.params['head_len'])
         x_step_size = self.params['head_len']
@@ -147,7 +146,7 @@ class TubeCommandGenerator:
             angle_step_count = self.get_angle_steps_count(revolution)
             angle_step_size = 360 / angle_step_count
 
-            for angle_step in range(angle_step_count):
+            for angle_step in range(round(angle_step_count)):
                 # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
                 angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
 
