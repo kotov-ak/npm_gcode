@@ -97,7 +97,7 @@ class TubeCommandGenerator:
         if self.params['num_of_needle_rows'] == 1:
             radial_head_offset = 2
         else:
-            radial_head_offset = self.params['num_of_needle_rows'] * self.params['needle_step_Y']
+            radial_head_offset = round(self.params['num_of_needle_rows'] * self.params['needle_step_Y'])
 
         # Идеальное количество шагов
         circle_len = self.get_circle_len(revolution)
@@ -146,7 +146,7 @@ class TubeCommandGenerator:
             angle_step_count = self.get_angle_steps_count(revolution)
             angle_step_size = 360 / angle_step_count
 
-            for angle_step in range(round(angle_step_count)):
+            for angle_step in range(angle_step_count):
                 # Вычисляем угол с учетом смещения от предыдущих вызовов generate_commands
                 angle_deg = round(360 * revolution + angle_step_size * angle_step, 3)
 
