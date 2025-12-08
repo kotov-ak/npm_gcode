@@ -95,7 +95,7 @@ class TubeCommandGenerator:
         """
         # Величина смещения игольницы по окружности
         if self.params['num_of_needle_rows'] == 1:
-            radial_head_offset = 2.0
+            radial_head_offset = round(2.0)
         else:
             radial_head_offset = round(self.params['num_of_needle_rows'] * self.params['needle_step_Y'])
 
