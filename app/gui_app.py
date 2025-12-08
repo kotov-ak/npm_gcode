@@ -95,6 +95,7 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
         dlg = QMessageBox(self)
         dlg.setWindowTitle("Описание текущей версии")
         dlg.setText(version_description)
+        dlg.setStyleSheet("QMessageBox QLabel { min-width: 300px}")
         dlg.exec()
 
     def text_to_info_out(self, text):
@@ -139,17 +140,22 @@ class MainWindow(QMainWindow, Ui_NPM_Code_Generator):
             'o_diam': self.o_dia,
             'fabric_thickness': self.fab_thick,
             'punch_step_r': self.punch_step_r,
-            'needle_step_X': self.needle_step,
+            'needle_step_X': self.needle_step_x,
+            'needle_step_Y': self.needle_step_y,
             'volumetric_density': self.volumetric_density,
             'head_len': self.punch_head_len,
             'punch_depth': self.punch_depth,
             'punch_offset': self.needle_offset,
+            'zero_offset_Y': self.zero_offset_y,
+            'zero_offset_Z': self.zero_offset_z,
             'support_depth': self.shoe_depth,
             'idling_speed': self.idling_speed,
             'move_speed': self.move_speed,
             'rotate_speed': self.rotate_speed,
-            'random_border': self.random_border
+            'random_border': self.random_border,
+            'num_of_needle_rows': self.needle_row_num
         }
+
 
         if len(advanced_dict) != len(data_field_to_widget):
             print("Warning! Не все поля advanced_dict обновляются в gui")

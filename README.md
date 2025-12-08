@@ -1,7 +1,7 @@
 # Генератор G-кода для ИПС
 
-![Дата](https://img.shields.io/badge/дата_последнего_изменеия-22/09/25-green)
-![Версия](https://img.shields.io/badge/версия-1.0.2-blue)
+![Дата](https://img.shields.io/badge/дата_последнего_изменеия-2025/12/01-green)
+![Версия](https://img.shields.io/badge/версия-2.0.0-blue)
 ![Статус](https://img.shields.io/badge/статус-в%20разработке-yellow)
 
 
