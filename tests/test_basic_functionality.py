@@ -28,7 +28,6 @@ class TestBasicFunctionality(unittest.TestCase):
             'punch_step_r': 1,
             'needle_step_X': 8,
             'needle_step_Y': 8,
-            'volumetric_density': 25,
             'head_len': 264,
             'punch_depth': 14,
             'punch_offset': 10,
@@ -39,7 +38,9 @@ class TestBasicFunctionality(unittest.TestCase):
             'move_speed': 1200,
             'rotate_speed': 2000,
             'random_border':0.5,
-            'num_of_needle_rows': 1
+            'num_of_needle_rows': 1,
+            'x_substep_count': 8,
+            'x_substep_count_in_one_revolution': 2,
         }
 
     def test_generator_creation(self):
@@ -91,7 +92,7 @@ class TestBasicFunctionality(unittest.TestCase):
         generator = CommandLinesGenerator(self.minimal_params)
         lines = generator.generate_radial_spiral_pattern()
 
-        with open("last_test.txt", "w") as f:
+        with open("basic_test.txt", "w") as f:
             f.writelines(lines)
 
         self.assertIsInstance(lines, list)

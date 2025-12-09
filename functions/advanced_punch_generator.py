@@ -113,7 +113,6 @@ if __name__ == '__main__':
         'punch_step_r': 1,
         'needle_step_X': 8,
         'needle_step_Y': 8,
-        'volumetric_density': 25,
         'head_len': 264,
         'punch_depth': 14,
         'punch_offset': 10,
@@ -124,11 +123,12 @@ if __name__ == '__main__':
         'move_speed': 1200,
         'rotate_speed': 2000,
         'random_border': 0.25,
-        'num_of_needle_rows': 1
+        'num_of_needle_rows': 1,
+        'x_substep_count': 8
     }
             
     generator = CommandLinesGenerator(minimal_params)
     lines = generator.generate_radial_spiral_pattern()
 
-    with open("last_test.txt", "w") as f:
+    with open("test_file.txt", "w") as f:
         f.writelines(lines)
