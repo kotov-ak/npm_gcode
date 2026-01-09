@@ -80,7 +80,6 @@ advanced_dict = dict(
     punch_step_r=1, # 1
     needle_step_X=8, # 8
     needle_step_Y=8, # 8-16
-    volumetric_density=25,
     head_len=264, # 264
     punch_depth=14, # 12+
     punch_offset=10,
@@ -92,6 +91,8 @@ advanced_dict = dict(
     rotate_speed=1000, # 1000
     random_border=0.5, # 0-0.5
     num_of_needle_rows=1, # количество рядов игл
+    x_substep_count=8, # это влияет на форму паттерна
+    x_substep_count_in_one_revolution=2 # изменяем этот параметр для получения заданной поверхностной плотности пробивки
 )
 
 

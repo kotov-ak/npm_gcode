@@ -19,7 +19,6 @@ punch_params_dict = dict(
     punch_step_r=1, # 1
     needle_step_X=8, # 8
     needle_step_Y=8, # 8-16
-    volumetric_density=25,
     head_len=264, # 264
     punch_depth=15, # 12+
     punch_offset=10,
@@ -30,7 +29,8 @@ punch_params_dict = dict(
     move_speed=1000, # 1500
     rotate_speed=2000, # 1000
     random_border=0, # 0-0.5
-    num_of_needle_rows=1 # количество рядов игл
+    num_of_needle_rows=1, # количество рядов игл
+    x_substep_count=8
 )
 
 if __name__ == '__main__':

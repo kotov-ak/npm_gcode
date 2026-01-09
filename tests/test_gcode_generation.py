@@ -29,7 +29,6 @@ class TestGCodeGeneration(unittest.TestCase):
             'punch_step_r': 1,
             'needle_step_X': 8,
             'needle_step_Y': 8,
-            'volumetric_density': 25,
             'head_len': 264,
             'punch_depth': 15,
             'punch_offset': 10,
@@ -40,7 +39,9 @@ class TestGCodeGeneration(unittest.TestCase):
             'move_speed': 1000,
             'rotate_speed': 2000,
             'random_border':0.5,
-            'num_of_needle_rows': 1
+            'num_of_needle_rows': 1,
+            'x_substep_count': 8,
+            'x_substep_count_in_one_revolution': 2,
         }
 
         self.reference_file = os.path.join(
@@ -70,6 +71,10 @@ class TestGCodeGeneration(unittest.TestCase):
         # Генерируем G-code
         print("Генерация G-code...")
         generated_lines = generate_command_lines(self.test_params)
+
+        with open("full_test.txt", "w") as f:
+            f.writelines(generated_lines)
+        
         self.assertIsInstance(generated_lines, list, "Результат должен быть списком")
         self.assertGreater(len(generated_lines), 0, "Сгенерированный список не должен быть пустым")
 
@@ -451,7 +456,6 @@ class TestGCodeGeneration(unittest.TestCase):
         self.assertIn('Tube length => 528', header_text, "Параметр tube_len не найден")
         self.assertIn('Internal diameter => 60', header_text, "Параметр i_diam не найден")
         self.assertIn('Outer diameter => 70', header_text, "Параметр o_diam не найден")
-        self.assertIn('Volumetric density => 25', header_text, "Параметр volumetric_density не найден")
 
     def _print_tolerance_statistics(self):
         """Вывод статистики по погрешностям"""
