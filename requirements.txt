@@ -1,5 +1,6 @@
-# GUI framework
-PyQt5>=5.15.0
+# GUI frameworks
+PyQt5>=5.15.0          # Старый интерфейс
+PySide6>=6.5.0         # Новый современный интерфейс
 
 # Numerical computations
 numpy>=1.21.0

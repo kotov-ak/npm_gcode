@@ -122,8 +122,8 @@ class ParameterValidator:
     def _check_discrete_values(self, params_dict):
         """Проверка дискретных значений"""
         checks = [
-            (params_dict['volumetric_density'] not in self.limits.ALLOWED_VOLUMETRIC_DENSITIES, 'volumetric_density',
-             f"Объемная плотность должна быть {', '.join(map(str, self.limits.ALLOWED_VOLUMETRIC_DENSITIES))} (получено: {params_dict['volumetric_density']})"),
+            # (params_dict['volumetric_density'] not in self.limits.ALLOWED_VOLUMETRIC_DENSITIES, 'volumetric_density',
+            #  f"Объемная плотность должна быть {', '.join(map(str, self.limits.ALLOWED_VOLUMETRIC_DENSITIES))} (получено: {params_dict['volumetric_density']})"),
 
             (params_dict['punch_step_r'] not in self.limits.ALLOWED_PUNCH_STEPS, 'punch_step_r',
              f"Шаг пробития должен быть {', '.join(map(str, self.limits.ALLOWED_PUNCH_STEPS))} мм (получено: {params_dict['punch_step_r']})"),
